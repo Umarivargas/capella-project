@@ -1,0 +1,92 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="AnalisisRiesgosConnectStoreContainer" CdmEntityContainer="Entities">
+    <EntitySetMapping Name="Empresas">
+      <EntityTypeMapping TypeName="AnalisisRiesgosConnect.Empresa">
+        <MappingFragment StoreEntitySet="Empresa">
+          <ScalarProperty Name="IdEmpresa" ColumnName="IdEmpresa" />
+          <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+          <ScalarProperty Name="IdUsuario" ColumnName="IdUsuario" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Objetivoes">
+      <EntityTypeMapping TypeName="AnalisisRiesgosConnect.Objetivo">
+        <MappingFragment StoreEntitySet="Objetivo">
+          <ScalarProperty Name="IdObjetivo" ColumnName="IdObjetivo" />
+          <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+          <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+          <ScalarProperty Name="IdProyecto" ColumnName="IdProyecto" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ObjetivosProyectoes">
+      <EntityTypeMapping TypeName="AnalisisRiesgosConnect.ObjetivosProyecto">
+        <MappingFragment StoreEntitySet="ObjetivosProyecto">
+          <ScalarProperty Name="IdObjProyecto" ColumnName="IdObjProyecto" />
+          <ScalarProperty Name="Fk_Objetivo" ColumnName="Fk_Objetivo" />
+          <ScalarProperty Name="Fk_Proyecto" ColumnName="Fk_Proyecto" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Proyectoes">
+      <EntityTypeMapping TypeName="AnalisisRiesgosConnect.Proyecto">
+        <MappingFragment StoreEntitySet="Proyecto">
+          <ScalarProperty Name="IdProyecto" ColumnName="IdProyecto" />
+          <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+          <ScalarProperty Name="IdEmpresa" ColumnName="IdEmpresa" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ProyectosEmpresas">
+      <EntityTypeMapping TypeName="AnalisisRiesgosConnect.ProyectosEmpresa">
+        <MappingFragment StoreEntitySet="ProyectosEmpresa">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Fk_Proyecto" ColumnName="Fk_Proyecto" />
+          <ScalarProperty Name="Fk_Empresa" ColumnName="Fk_Empresa" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Riesgoes">
+      <EntityTypeMapping TypeName="AnalisisRiesgosConnect.Riesgo">
+        <MappingFragment StoreEntitySet="Riesgo">
+          <ScalarProperty Name="IdRiesgo" ColumnName="IdRiesgo" />
+          <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+          <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+          <ScalarProperty Name="Probabilidad" ColumnName="Probabilidad" />
+          <ScalarProperty Name="Impacto" ColumnName="Impacto" />
+          <ScalarProperty Name="IdProyecto" ColumnName="IdProyecto" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="RiesgosProyectoes">
+      <EntityTypeMapping TypeName="AnalisisRiesgosConnect.RiesgosProyecto">
+        <MappingFragment StoreEntitySet="RiesgosProyecto">
+          <ScalarProperty Name="IdRiesgosProyecto" ColumnName="IdRiesgosProyecto" />
+          <ScalarProperty Name="Fk_Riesgo" ColumnName="Fk_Riesgo" />
+          <ScalarProperty Name="Fk_Proyecto" ColumnName="Fk_Proyecto" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Usuarios">
+      <EntityTypeMapping TypeName="AnalisisRiesgosConnect.Usuario">
+        <MappingFragment StoreEntitySet="Usuario">
+          <ScalarProperty Name="IdUsuario" ColumnName="IdUsuario" />
+          <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+          <ScalarProperty Name="Apellidos" ColumnName="Apellidos" />
+          <ScalarProperty Name="Password" ColumnName="Password" />
+          <ScalarProperty Name="CorreoElec" ColumnName="CorreoElec" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="UsuariosEmpresas">
+      <EntityTypeMapping TypeName="AnalisisRiesgosConnect.UsuariosEmpresa">
+        <MappingFragment StoreEntitySet="UsuariosEmpresa">
+          <ScalarProperty Name="IdUsuariosEmpresa" ColumnName="IdUsuariosEmpresa" />
+          <ScalarProperty Name="Fk_Usuario" ColumnName="Fk_Usuario" />
+          <ScalarProperty Name="Fk_Empresa" ColumnName="Fk_Empresa" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

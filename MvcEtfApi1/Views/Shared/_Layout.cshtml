@@ -1,41 +1,56 @@
 ﻿<!DOCTYPE html>
-<html>
+<html ng-app="mainApp" >
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width" />
     <title>@ViewBag.Title</title>
     @Styles.Render("~/Content/css")
+    @Styles.Render("~/css/new.css")
+    @Styles.Render("~/css/charts-graphs.css")
     @Scripts.Render("~/bundles/modernizr")
 </head>
 <body>
-    <div class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                @Html.ActionLink("Application name", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
-            </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Home", "Index", "Home", new { area = "" }, null)</li>
-                    <li>@Html.ActionLink("API", "Index", "Help", new { area = "" }, null)</li>
-                </ul>
+    <div>
+        <!-- New Navigation-->
+        <div class="sub-nav hidden-sm hidden-xs">
+            <ul>
+                <li>
+                    @Html.ActionLink("Analisis de riesgos", "Index", new { area = "" }, new { @class = "navbar-brand" })
+                </li>
+                <li class="hidden-sm hidden-xs">
+                    <a ui-sref="Empresas.Lista">Empresas</a>
+                </li>
+                <li class="hidden-sm hidden-xs">
+                    <a ui-sref="Proyectos.Lista">Proyectos</a>
+                </li>
+                <li class="hidden-sm hidden-xs">
+                    <a ui-sref="Objetivos.Lista">Objetivos</a>
+                </li>
+                <li class="hidden-sm hidden-xs">
+                    <a ui-sref="Riesgos.Lista">Riesgos</a>
+                </li>
+            </ul>
+            <!--Search-->
+            <div class="custom-search hidden-sm hidden-xs">
+                <input type="text" class="search-query" placeholder="Search here ...">
+                <i class="fa fa-search"></i>
             </div>
         </div>
-    </div>
-    <div class="container body-content">
-        @RenderBody()
-        <hr />
-        <footer>
-            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
-        </footer>
+
     </div>
 
+    @RenderBody()
     @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/Scripts/angular.js")
+    @Scripts.Render("~/Scripts/angular-ui-router.min.js")
     @Scripts.Render("~/bundles/bootstrap")
-    @RenderSection("scripts", required: false)
+
+    <script src="~/Scripts/mainApp.js"></script>
+    <script src="~/AnalisisApp/Scripts/Services/Empresas_Service.js"></script>
+    <script src="~/AnalisisApp/Scripts/Services/Objetivos_Service.js"></script>
+    <script src="~/AnalisisApp/Scripts/Services/Proyectos_Service.js"></script>
+    <script src="~/AnalisisApp/Scripts/Services/Riesgos_Service.js"></script>
+    <script src="~/AnalisisApp/Scripts/Services/Usuarios_Service.js"></script>
+
 </body>
 </html>

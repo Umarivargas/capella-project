@@ -1,0 +1,582 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="AnalisisRiesgosModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Empresa">
+          <Key>
+            <PropertyRef Name="IdEmpresa" />
+          </Key>
+          <Property Name="IdEmpresa" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombre" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="IdUsuario" Type="int" />
+        </EntityType>
+        <EntityType Name="Objetivo">
+          <Key>
+            <PropertyRef Name="IdObjetivo" />
+          </Key>
+          <Property Name="IdObjetivo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombre" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Descripcion" Type="varchar" MaxLength="50" />
+          <Property Name="IdProyecto" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ObjetivosProyecto">
+          <Key>
+            <PropertyRef Name="IdObjProyecto" />
+          </Key>
+          <Property Name="IdObjProyecto" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Fk_Objetivo" Type="int" Nullable="false" />
+          <Property Name="Fk_Proyecto" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Proyecto">
+          <Key>
+            <PropertyRef Name="IdProyecto" />
+          </Key>
+          <Property Name="IdProyecto" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombre" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="IdEmpresa" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ProyectosEmpresa">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Fk_Proyecto" Type="int" Nullable="false" />
+          <Property Name="Fk_Empresa" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Riesgo">
+          <Key>
+            <PropertyRef Name="IdRiesgo" />
+          </Key>
+          <Property Name="IdRiesgo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombre" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Descripcion" Type="varchar" MaxLength="250" />
+          <Property Name="Categoria" Type="int" Nullable="false" />
+          <Property Name="Probabilidad" Type="int" Nullable="false" />
+          <Property Name="Impacto" Type="int" Nullable="false" />
+          <Property Name="IdObjetivo" Type="int" />
+        </EntityType>
+        <EntityType Name="RiesgosObjetivo">
+          <Key>
+            <PropertyRef Name="IdRiesgosObjetivo" />
+          </Key>
+          <Property Name="IdRiesgosObjetivo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Fk_Riesgo" Type="int" Nullable="false" />
+          <Property Name="Fk_Objetivo" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Usuario">
+          <Key>
+            <PropertyRef Name="IdUsuario" />
+          </Key>
+          <Property Name="IdUsuario" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombre" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Apellidos" Type="varchar" MaxLength="50" />
+          <Property Name="Password" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="CorreoElec" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="UsuariosEmpresa">
+          <Key>
+            <PropertyRef Name="IdUsuariosEmpresa" />
+          </Key>
+          <Property Name="IdUsuariosEmpresa" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Fk_Usuario" Type="int" Nullable="false" />
+          <Property Name="Fk_Empresa" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_EmpUsua_Empresa">
+          <End Role="Empresa" Type="Self.Empresa" Multiplicity="1" />
+          <End Role="UsuariosEmpresa" Type="Self.UsuariosEmpresa" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Empresa">
+              <PropertyRef Name="IdEmpresa" />
+            </Principal>
+            <Dependent Role="UsuariosEmpresa">
+              <PropertyRef Name="Fk_Empresa" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ObjProy_Objetivos">
+          <End Role="Objetivo" Type="Self.Objetivo" Multiplicity="1" />
+          <End Role="ObjetivosProyecto" Type="Self.ObjetivosProyecto" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Objetivo">
+              <PropertyRef Name="IdObjetivo" />
+            </Principal>
+            <Dependent Role="ObjetivosProyecto">
+              <PropertyRef Name="Fk_Objetivo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ObjProy_Proyecto">
+          <End Role="Proyecto" Type="Self.Proyecto" Multiplicity="1" />
+          <End Role="ObjetivosProyecto" Type="Self.ObjetivosProyecto" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Proyecto">
+              <PropertyRef Name="IdProyecto" />
+            </Principal>
+            <Dependent Role="ObjetivosProyecto">
+              <PropertyRef Name="Fk_Proyecto" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ObjRies_Objetivo">
+          <End Role="Objetivo" Type="Self.Objetivo" Multiplicity="1" />
+          <End Role="RiesgosObjetivo" Type="Self.RiesgosObjetivo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Objetivo">
+              <PropertyRef Name="IdObjetivo" />
+            </Principal>
+            <Dependent Role="RiesgosObjetivo">
+              <PropertyRef Name="Fk_Objetivo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ProyEmp__Proyectos">
+          <End Role="Proyecto" Type="Self.Proyecto" Multiplicity="1" />
+          <End Role="ProyectosEmpresa" Type="Self.ProyectosEmpresa" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Proyecto">
+              <PropertyRef Name="IdProyecto" />
+            </Principal>
+            <Dependent Role="ProyectosEmpresa">
+              <PropertyRef Name="Fk_Proyecto" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ProyEmp_Empresa">
+          <End Role="Empresa" Type="Self.Empresa" Multiplicity="1" />
+          <End Role="ProyectosEmpresa" Type="Self.ProyectosEmpresa" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Empresa">
+              <PropertyRef Name="IdEmpresa" />
+            </Principal>
+            <Dependent Role="ProyectosEmpresa">
+              <PropertyRef Name="Fk_Empresa" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RiesObj_Riesgos">
+          <End Role="Riesgo" Type="Self.Riesgo" Multiplicity="1" />
+          <End Role="RiesgosObjetivo" Type="Self.RiesgosObjetivo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Riesgo">
+              <PropertyRef Name="IdRiesgo" />
+            </Principal>
+            <Dependent Role="RiesgosObjetivo">
+              <PropertyRef Name="Fk_Riesgo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UsuaEmp_Usuarios">
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="1" />
+          <End Role="UsuariosEmpresa" Type="Self.UsuariosEmpresa" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="IdUsuario" />
+            </Principal>
+            <Dependent Role="UsuariosEmpresa">
+              <PropertyRef Name="Fk_Usuario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="AnalisisRiesgosModelStoreContainer">
+          <EntitySet Name="Empresa" EntityType="Self.Empresa" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Objetivo" EntityType="Self.Objetivo" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ObjetivosProyecto" EntityType="Self.ObjetivosProyecto" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Proyecto" EntityType="Self.Proyecto" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ProyectosEmpresa" EntityType="Self.ProyectosEmpresa" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Riesgo" EntityType="Self.Riesgo" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="RiesgosObjetivo" EntityType="Self.RiesgosObjetivo" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Usuario" EntityType="Self.Usuario" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UsuariosEmpresa" EntityType="Self.UsuariosEmpresa" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_EmpUsua_Empresa" Association="Self.FK_EmpUsua_Empresa">
+            <End Role="Empresa" EntitySet="Empresa" />
+            <End Role="UsuariosEmpresa" EntitySet="UsuariosEmpresa" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ObjProy_Objetivos" Association="Self.FK_ObjProy_Objetivos">
+            <End Role="Objetivo" EntitySet="Objetivo" />
+            <End Role="ObjetivosProyecto" EntitySet="ObjetivosProyecto" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ObjProy_Proyecto" Association="Self.FK_ObjProy_Proyecto">
+            <End Role="Proyecto" EntitySet="Proyecto" />
+            <End Role="ObjetivosProyecto" EntitySet="ObjetivosProyecto" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ObjRies_Objetivo" Association="Self.FK_ObjRies_Objetivo">
+            <End Role="Objetivo" EntitySet="Objetivo" />
+            <End Role="RiesgosObjetivo" EntitySet="RiesgosObjetivo" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ProyEmp__Proyectos" Association="Self.FK_ProyEmp__Proyectos">
+            <End Role="Proyecto" EntitySet="Proyecto" />
+            <End Role="ProyectosEmpresa" EntitySet="ProyectosEmpresa" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ProyEmp_Empresa" Association="Self.FK_ProyEmp_Empresa">
+            <End Role="Empresa" EntitySet="Empresa" />
+            <End Role="ProyectosEmpresa" EntitySet="ProyectosEmpresa" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RiesObj_Riesgos" Association="Self.FK_RiesObj_Riesgos">
+            <End Role="Riesgo" EntitySet="Riesgo" />
+            <End Role="RiesgosObjetivo" EntitySet="RiesgosObjetivo" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UsuaEmp_Usuarios" Association="Self.FK_UsuaEmp_Usuarios">
+            <End Role="Usuario" EntitySet="Usuario" />
+            <End Role="UsuariosEmpresa" EntitySet="UsuariosEmpresa" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="AnalisisRiesgosModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Empresa">
+          <Key>
+            <PropertyRef Name="IdEmpresa" />
+          </Key>
+          <Property Name="IdEmpresa" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="IdUsuario" Type="Int32" />
+          <NavigationProperty Name="UsuariosEmpresas" Relationship="Self.FK_EmpUsua_Empresa" FromRole="Empresa" ToRole="UsuariosEmpresa" />
+          <NavigationProperty Name="ProyectosEmpresas" Relationship="Self.FK_ProyEmp_Empresa" FromRole="Empresa" ToRole="ProyectosEmpresa" />
+        </EntityType>
+        <EntityType Name="Objetivo">
+          <Key>
+            <PropertyRef Name="IdObjetivo" />
+          </Key>
+          <Property Name="IdObjetivo" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Descripcion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="IdProyecto" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="ObjetivosProyectoes" Relationship="Self.FK_ObjProy_Objetivos" FromRole="Objetivo" ToRole="ObjetivosProyecto" />
+          <NavigationProperty Name="RiesgosObjetivoes" Relationship="Self.FK_ObjRies_Objetivo" FromRole="Objetivo" ToRole="RiesgosObjetivo" />
+        </EntityType>
+        <EntityType Name="ObjetivosProyecto">
+          <Key>
+            <PropertyRef Name="IdObjProyecto" />
+          </Key>
+          <Property Name="IdObjProyecto" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Fk_Objetivo" Type="Int32" Nullable="false" />
+          <Property Name="Fk_Proyecto" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Objetivo" Relationship="Self.FK_ObjProy_Objetivos" FromRole="ObjetivosProyecto" ToRole="Objetivo" />
+          <NavigationProperty Name="Proyecto" Relationship="Self.FK_ObjProy_Proyecto" FromRole="ObjetivosProyecto" ToRole="Proyecto" />
+        </EntityType>
+        <EntityType Name="Proyecto">
+          <Key>
+            <PropertyRef Name="IdProyecto" />
+          </Key>
+          <Property Name="IdProyecto" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="IdEmpresa" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="ObjetivosProyectoes" Relationship="Self.FK_ObjProy_Proyecto" FromRole="Proyecto" ToRole="ObjetivosProyecto" />
+          <NavigationProperty Name="ProyectosEmpresas" Relationship="Self.FK_ProyEmp__Proyectos" FromRole="Proyecto" ToRole="ProyectosEmpresa" />
+        </EntityType>
+        <EntityType Name="ProyectosEmpresa">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Fk_Proyecto" Type="Int32" Nullable="false" />
+          <Property Name="Fk_Empresa" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Empresa" Relationship="Self.FK_ProyEmp_Empresa" FromRole="ProyectosEmpresa" ToRole="Empresa" />
+          <NavigationProperty Name="Proyecto" Relationship="Self.FK_ProyEmp__Proyectos" FromRole="ProyectosEmpresa" ToRole="Proyecto" />
+        </EntityType>
+        <EntityType Name="Riesgo">
+          <Key>
+            <PropertyRef Name="IdRiesgo" />
+          </Key>
+          <Property Name="IdRiesgo" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Descripcion" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="Categoria" Type="Int32" Nullable="false" />
+          <Property Name="Probabilidad" Type="Int32" Nullable="false" />
+          <Property Name="Impacto" Type="Int32" Nullable="false" />
+          <Property Name="IdObjetivo" Type="Int32" />
+          <NavigationProperty Name="RiesgosObjetivoes" Relationship="Self.FK_RiesObj_Riesgos" FromRole="Riesgo" ToRole="RiesgosObjetivo" />
+        </EntityType>
+        <EntityType Name="RiesgosObjetivo">
+          <Key>
+            <PropertyRef Name="IdRiesgosObjetivo" />
+          </Key>
+          <Property Name="IdRiesgosObjetivo" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Fk_Riesgo" Type="Int32" Nullable="false" />
+          <Property Name="Fk_Objetivo" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Objetivo" Relationship="Self.FK_ObjRies_Objetivo" FromRole="RiesgosObjetivo" ToRole="Objetivo" />
+          <NavigationProperty Name="Riesgo" Relationship="Self.FK_RiesObj_Riesgos" FromRole="RiesgosObjetivo" ToRole="Riesgo" />
+        </EntityType>
+        <EntityType Name="Usuario">
+          <Key>
+            <PropertyRef Name="IdUsuario" />
+          </Key>
+          <Property Name="IdUsuario" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Apellidos" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="CorreoElec" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="UsuariosEmpresas" Relationship="Self.FK_UsuaEmp_Usuarios" FromRole="Usuario" ToRole="UsuariosEmpresa" />
+        </EntityType>
+        <EntityType Name="UsuariosEmpresa">
+          <Key>
+            <PropertyRef Name="IdUsuariosEmpresa" />
+          </Key>
+          <Property Name="IdUsuariosEmpresa" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Fk_Usuario" Type="Int32" Nullable="false" />
+          <Property Name="Fk_Empresa" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Empresa" Relationship="Self.FK_EmpUsua_Empresa" FromRole="UsuariosEmpresa" ToRole="Empresa" />
+          <NavigationProperty Name="Usuario" Relationship="Self.FK_UsuaEmp_Usuarios" FromRole="UsuariosEmpresa" ToRole="Usuario" />
+        </EntityType>
+        <Association Name="FK_EmpUsua_Empresa">
+          <End Role="Empresa" Type="Self.Empresa" Multiplicity="1" />
+          <End Role="UsuariosEmpresa" Type="Self.UsuariosEmpresa" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Empresa">
+              <PropertyRef Name="IdEmpresa" />
+            </Principal>
+            <Dependent Role="UsuariosEmpresa">
+              <PropertyRef Name="Fk_Empresa" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ProyEmp_Empresa">
+          <End Role="Empresa" Type="Self.Empresa" Multiplicity="1" />
+          <End Role="ProyectosEmpresa" Type="Self.ProyectosEmpresa" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Empresa">
+              <PropertyRef Name="IdEmpresa" />
+            </Principal>
+            <Dependent Role="ProyectosEmpresa">
+              <PropertyRef Name="Fk_Empresa" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ObjProy_Objetivos">
+          <End Role="Objetivo" Type="Self.Objetivo" Multiplicity="1" />
+          <End Role="ObjetivosProyecto" Type="Self.ObjetivosProyecto" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Objetivo">
+              <PropertyRef Name="IdObjetivo" />
+            </Principal>
+            <Dependent Role="ObjetivosProyecto">
+              <PropertyRef Name="Fk_Objetivo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ObjRies_Objetivo">
+          <End Role="Objetivo" Type="Self.Objetivo" Multiplicity="1" />
+          <End Role="RiesgosObjetivo" Type="Self.RiesgosObjetivo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Objetivo">
+              <PropertyRef Name="IdObjetivo" />
+            </Principal>
+            <Dependent Role="RiesgosObjetivo">
+              <PropertyRef Name="Fk_Objetivo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ObjProy_Proyecto">
+          <End Role="Proyecto" Type="Self.Proyecto" Multiplicity="1" />
+          <End Role="ObjetivosProyecto" Type="Self.ObjetivosProyecto" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Proyecto">
+              <PropertyRef Name="IdProyecto" />
+            </Principal>
+            <Dependent Role="ObjetivosProyecto">
+              <PropertyRef Name="Fk_Proyecto" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ProyEmp__Proyectos">
+          <End Role="Proyecto" Type="Self.Proyecto" Multiplicity="1" />
+          <End Role="ProyectosEmpresa" Type="Self.ProyectosEmpresa" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Proyecto">
+              <PropertyRef Name="IdProyecto" />
+            </Principal>
+            <Dependent Role="ProyectosEmpresa">
+              <PropertyRef Name="Fk_Proyecto" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RiesObj_Riesgos">
+          <End Role="Riesgo" Type="Self.Riesgo" Multiplicity="1" />
+          <End Role="RiesgosObjetivo" Type="Self.RiesgosObjetivo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Riesgo">
+              <PropertyRef Name="IdRiesgo" />
+            </Principal>
+            <Dependent Role="RiesgosObjetivo">
+              <PropertyRef Name="Fk_Riesgo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UsuaEmp_Usuarios">
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="1" />
+          <End Role="UsuariosEmpresa" Type="Self.UsuariosEmpresa" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="IdUsuario" />
+            </Principal>
+            <Dependent Role="UsuariosEmpresa">
+              <PropertyRef Name="Fk_Usuario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="AnalisisRiesgosConnect" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Empresas" EntityType="Self.Empresa" />
+          <EntitySet Name="Objetivoes" EntityType="Self.Objetivo" />
+          <EntitySet Name="ObjetivosProyectoes" EntityType="Self.ObjetivosProyecto" />
+          <EntitySet Name="Proyectoes" EntityType="Self.Proyecto" />
+          <EntitySet Name="ProyectosEmpresas" EntityType="Self.ProyectosEmpresa" />
+          <EntitySet Name="Riesgoes" EntityType="Self.Riesgo" />
+          <EntitySet Name="RiesgosObjetivoes" EntityType="Self.RiesgosObjetivo" />
+          <EntitySet Name="Usuarios" EntityType="Self.Usuario" />
+          <EntitySet Name="UsuariosEmpresas" EntityType="Self.UsuariosEmpresa" />
+          <AssociationSet Name="FK_EmpUsua_Empresa" Association="Self.FK_EmpUsua_Empresa">
+            <End Role="Empresa" EntitySet="Empresas" />
+            <End Role="UsuariosEmpresa" EntitySet="UsuariosEmpresas" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ProyEmp_Empresa" Association="Self.FK_ProyEmp_Empresa">
+            <End Role="Empresa" EntitySet="Empresas" />
+            <End Role="ProyectosEmpresa" EntitySet="ProyectosEmpresas" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ObjProy_Objetivos" Association="Self.FK_ObjProy_Objetivos">
+            <End Role="Objetivo" EntitySet="Objetivoes" />
+            <End Role="ObjetivosProyecto" EntitySet="ObjetivosProyectoes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ObjRies_Objetivo" Association="Self.FK_ObjRies_Objetivo">
+            <End Role="Objetivo" EntitySet="Objetivoes" />
+            <End Role="RiesgosObjetivo" EntitySet="RiesgosObjetivoes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ObjProy_Proyecto" Association="Self.FK_ObjProy_Proyecto">
+            <End Role="Proyecto" EntitySet="Proyectoes" />
+            <End Role="ObjetivosProyecto" EntitySet="ObjetivosProyectoes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ProyEmp__Proyectos" Association="Self.FK_ProyEmp__Proyectos">
+            <End Role="Proyecto" EntitySet="Proyectoes" />
+            <End Role="ProyectosEmpresa" EntitySet="ProyectosEmpresas" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RiesObj_Riesgos" Association="Self.FK_RiesObj_Riesgos">
+            <End Role="Riesgo" EntitySet="Riesgoes" />
+            <End Role="RiesgosObjetivo" EntitySet="RiesgosObjetivoes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UsuaEmp_Usuarios" Association="Self.FK_UsuaEmp_Usuarios">
+            <End Role="Usuario" EntitySet="Usuarios" />
+            <End Role="UsuariosEmpresa" EntitySet="UsuariosEmpresas" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="AnalisisRiesgosModelStoreContainer" CdmEntityContainer="AnalisisRiesgosConnect">
+          <EntitySetMapping Name="Empresas">
+            <EntityTypeMapping TypeName="AnalisisRiesgosModel.Empresa">
+              <MappingFragment StoreEntitySet="Empresa">
+                <ScalarProperty Name="IdEmpresa" ColumnName="IdEmpresa" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="IdUsuario" ColumnName="IdUsuario" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Objetivoes">
+            <EntityTypeMapping TypeName="AnalisisRiesgosModel.Objetivo">
+              <MappingFragment StoreEntitySet="Objetivo">
+                <ScalarProperty Name="IdObjetivo" ColumnName="IdObjetivo" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+                <ScalarProperty Name="IdProyecto" ColumnName="IdProyecto" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ObjetivosProyectoes">
+            <EntityTypeMapping TypeName="AnalisisRiesgosModel.ObjetivosProyecto">
+              <MappingFragment StoreEntitySet="ObjetivosProyecto">
+                <ScalarProperty Name="IdObjProyecto" ColumnName="IdObjProyecto" />
+                <ScalarProperty Name="Fk_Objetivo" ColumnName="Fk_Objetivo" />
+                <ScalarProperty Name="Fk_Proyecto" ColumnName="Fk_Proyecto" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Proyectoes">
+            <EntityTypeMapping TypeName="AnalisisRiesgosModel.Proyecto">
+              <MappingFragment StoreEntitySet="Proyecto">
+                <ScalarProperty Name="IdProyecto" ColumnName="IdProyecto" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="IdEmpresa" ColumnName="IdEmpresa" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ProyectosEmpresas">
+            <EntityTypeMapping TypeName="AnalisisRiesgosModel.ProyectosEmpresa">
+              <MappingFragment StoreEntitySet="ProyectosEmpresa">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Fk_Proyecto" ColumnName="Fk_Proyecto" />
+                <ScalarProperty Name="Fk_Empresa" ColumnName="Fk_Empresa" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Riesgoes">
+            <EntityTypeMapping TypeName="AnalisisRiesgosModel.Riesgo">
+              <MappingFragment StoreEntitySet="Riesgo">
+                <ScalarProperty Name="IdRiesgo" ColumnName="IdRiesgo" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+                <ScalarProperty Name="Categoria" ColumnName="Categoria" />
+                <ScalarProperty Name="Probabilidad" ColumnName="Probabilidad" />
+                <ScalarProperty Name="Impacto" ColumnName="Impacto" />
+                <ScalarProperty Name="IdObjetivo" ColumnName="IdObjetivo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RiesgosObjetivoes">
+            <EntityTypeMapping TypeName="AnalisisRiesgosModel.RiesgosObjetivo">
+              <MappingFragment StoreEntitySet="RiesgosObjetivo">
+                <ScalarProperty Name="IdRiesgosObjetivo" ColumnName="IdRiesgosObjetivo" />
+                <ScalarProperty Name="Fk_Riesgo" ColumnName="Fk_Riesgo" />
+                <ScalarProperty Name="Fk_Objetivo" ColumnName="Fk_Objetivo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Usuarios">
+            <EntityTypeMapping TypeName="AnalisisRiesgosModel.Usuario">
+              <MappingFragment StoreEntitySet="Usuario">
+                <ScalarProperty Name="IdUsuario" ColumnName="IdUsuario" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Apellidos" ColumnName="Apellidos" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="CorreoElec" ColumnName="CorreoElec" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UsuariosEmpresas">
+            <EntityTypeMapping TypeName="AnalisisRiesgosModel.UsuariosEmpresa">
+              <MappingFragment StoreEntitySet="UsuariosEmpresa">
+                <ScalarProperty Name="IdUsuariosEmpresa" ColumnName="IdUsuariosEmpresa" />
+                <ScalarProperty Name="Fk_Usuario" ColumnName="Fk_Usuario" />
+                <ScalarProperty Name="Fk_Empresa" ColumnName="Fk_Empresa" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

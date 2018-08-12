@@ -1,0 +1,11 @@
+﻿<div ng-controller="UsuariosCtrl">
+    <h3>{{pagina}}</h3>
+    <div>
+        <span style="width:100px"><a ui-sref="Usuarios.Lista">Listar</a></span>
+        <span style="width:100px"><a ui-sref="Usuarios.Ingreso">Registrar</a></span>
+    </div>
+    <!-- Aqui se renderisa el contenido-->
+    <div ui-view>
+    </div>
+    <hr />
+</div>

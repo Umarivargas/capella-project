@@ -1,0 +1,23 @@
+﻿<div ng-controller="UsuariosCtrl">
+    {{message}}
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Apellidos</th>
+                <th>Mostrar</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="usuario in usuarios">
+                <td>{{usuario.Nombre}}</td>
+                <td>{{usuario.Apellidos}}</td>
+                <td>
+                    <a ui-sref="Usuarios.Detalle({id : usuario.IdUsuario})" class="btn btn-default btn-sm">Detalle</a>
+                    <a ng-click="Borrar(usuario.IdUsuario)" class="btn btn-danger btn-sm">Borrar</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <span style="width:100px"><a ui-sref="Usuarios">Regresar</a></span>
+</div>

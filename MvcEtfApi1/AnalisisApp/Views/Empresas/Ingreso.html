@@ -1,0 +1,17 @@
+﻿<h3>Ingreso</h3>
+<div class="col-md-5">
+    <form>
+        <div class="form-group">
+            <label for="Title">Nombre: </label>
+            <input name="Title" type="text" class="form-control" ng-model="emp.Nombre" placeholder="Nombre de empresa">
+        </div>
+
+        <button class="btn btn-primary" ng-click="registrarEmpresa()" >Guardar</button>
+        <button class="btn btn-primary" ng-click="Cancelar()" >Cancelar</button>
+    </form>
+    <br />
+    <div class="form-group">
+        <a ui-sref="Empresas.Lista">Regresar</a>
+    </div>
+    <hr />
+</div>  

@@ -1,0 +1,73 @@
+﻿<h3>Detalle</h3>
+<div data-ng-init="loadRies()" ng-controller="ObjetivosCtrl" class="row">
+    <div class="col-xs-2">
+        <p>Nombre: {{detObj.Nombre}}</p>
+        <p>ID: {{detObj.IdObjetivo}}</p>
+        <p>Descripcion: {{detObj.Descripcion}}</p>
+    </div>
+
+    <div class="col-xs-7">
+        <!-- ui-sref="Objetivos.Lista({id : proyecto.IdProyecto})" -->
+        <!-- <a ng-click="ListarObjetivos(proyecto.IdProyecto)" class="btn btn-default btn-sm">Listar Objetivos</a> -->
+        <h3>Riesgos</h3>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Descripcion</th>
+                    <th>Categoria</th>
+                    <th>Probabilidad</th>
+                    <th>Impacto</th>
+                    <th>Valor</th>
+                    <th>Mostrar</th>
+                    <th>Borrar</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="riesgo in riesXProy">
+                    <td>{{riesgo.Nombre}}</td>
+                    <td>{{riesgo.Descripcion}}</td>
+                    <td>{{getCategoria(riesgo.Categoria)}}</td>
+                    <td>{{riesgo.Probabilidad}}</td>
+                    <td>{{riesgo.Impacto}}</td>
+                    <td>{{riesgo.Probabilidad * riesgo.Impacto}}</td>
+                    <td>              
+                        <a ng-click="DetalleRies(riesgo)" class="btn btn-default btn-sm">Detalle</a>
+                        <!--<a ui-sref="Riesgos.Detalle({paramRies: {{riesgo}}})" ui-sref-opts="{reload: true}" class="btn btn-default btn-sm">Detalle</a>-->
+                    </td>
+                    <td>
+                        <a ui-sref="Borrar/{{riesgo.IdRiesgo}}" class="btn btn-danger btn-sm">Borrar</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <!---->
+    <div class="col-xs-3">
+        <h3>Registrar riesgo</h3>
+        <form>
+            <div class="form-group">
+                <label for="Nombre">Nombre: </label>
+                <input name="Nombre" type="text" class="form-control" ng-model="NombreRies" placeholder="Nombre del riesgo">
+            </div>
+            <div class="form-group">
+                <label for="Descripcion">Descripcion</label>
+                <input name="Descripcion" type="text" class="form-control" placeholder="Descripcion del riesgo" ng-model="DescripcionRies">
+            </div>
+            <div class="form-group">
+                <label for="Probabilidad">Probabilidad</label>
+                <input name="Probabilidad" type="text" class="form-control" placeholder="Valores de 1-5" ng-model="ProbabilidadRies">
+            </div>
+            <div class="form-group">
+                <label for="Impacto">Impacto</label>
+                <input name="Impacto" type="text" class="form-control" placeholder="Valores de 1-5" ng-model="ImpactoRies">
+            </div>
+            <button class="btn btn-primary" ng-click="RegRiesProy(proyecto.IdProyecto)">Guardar</button>
+            <button class="btn btn-primary" ng-click="Cancelar()">Cancelar</button>
+        </form>
+    </div>
+</div>
+<div class="row">
+    <a ui-sref="Objetivos.Lista">Regresar</a>
+</div>
+

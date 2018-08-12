@@ -1,0 +1,453 @@
+﻿/*    ==Scripting Parameters==
+
+    Source Server Version : SQL Server 2016 (13.0.4001)
+    Source Database Engine Edition : Microsoft SQL Server Express Edition
+    Source Database Engine Type : Standalone SQL Server
+
+    Target Server Version : SQL Server 2016
+    Target Database Engine Edition : Microsoft SQL Server Express Edition
+    Target Database Engine Type : Standalone SQL Server
+*/
+
+USE [master]
+GO
+
+/****** Object:  Database [AnalisisRiesgos]    Script Date: 8/4/2018 11:16:03 PM ******/
+CREATE DATABASE [AnalisisRiesgos]
+ CONTAINMENT = NONE
+ ON  PRIMARY 
+( NAME = N'AnalisisRiesgos', FILENAME = N'C:\Program Files\Microsoft SQL Server\MSSQL13.SQLEXPRESS\MSSQL\DATA\AnalisisRiesgos.mdf' , SIZE = 8192KB , MAXSIZE = UNLIMITED, FILEGROWTH = 65536KB )
+ LOG ON 
+( NAME = N'AnalisisRiesgos_log', FILENAME = N'C:\Program Files\Microsoft SQL Server\MSSQL13.SQLEXPRESS\MSSQL\DATA\AnalisisRiesgos_log.ldf' , SIZE = 8192KB , MAXSIZE = 2048GB , FILEGROWTH = 65536KB )
+GO
+
+ALTER DATABASE [AnalisisRiesgos] SET COMPATIBILITY_LEVEL = 130
+GO
+
+IF (1 = FULLTEXTSERVICEPROPERTY('IsFullTextInstalled'))
+begin
+EXEC [AnalisisRiesgos].[dbo].[sp_fulltext_database] @action = 'enable'
+end
+GO
+
+ALTER DATABASE [AnalisisRiesgos] SET ANSI_NULL_DEFAULT OFF 
+GO
+
+ALTER DATABASE [AnalisisRiesgos] SET ANSI_NULLS OFF 
+GO
+
+ALTER DATABASE [AnalisisRiesgos] SET ANSI_PADDING OFF 
+GO
+
+ALTER DATABASE [AnalisisRiesgos] SET ANSI_WARNINGS OFF 
+GO
+
+ALTER DATABASE [AnalisisRiesgos] SET ARITHABORT OFF 
+GO
+
+ALTER DATABASE [AnalisisRiesgos] SET AUTO_CLOSE OFF 
+GO
+
+ALTER DATABASE [AnalisisRiesgos] SET AUTO_SHRINK OFF 
+GO
+
+ALTER DATABASE [AnalisisRiesgos] SET AUTO_UPDATE_STATISTICS ON 
+GO
+
+ALTER DATABASE [AnalisisRiesgos] SET CURSOR_CLOSE_ON_COMMIT OFF 
+GO
+
+ALTER DATABASE [AnalisisRiesgos] SET CURSOR_DEFAULT  GLOBAL 
+GO
+
+ALTER DATABASE [AnalisisRiesgos] SET CONCAT_NULL_YIELDS_NULL OFF 
+GO
+
+ALTER DATABASE [AnalisisRiesgos] SET NUMERIC_ROUNDABORT OFF 
+GO
+
+ALTER DATABASE [AnalisisRiesgos] SET QUOTED_IDENTIFIER OFF 
+GO
+
+ALTER DATABASE [AnalisisRiesgos] SET RECURSIVE_TRIGGERS OFF 
+GO
+
+ALTER DATABASE [AnalisisRiesgos] SET  DISABLE_BROKER 
+GO
+
+ALTER DATABASE [AnalisisRiesgos] SET AUTO_UPDATE_STATISTICS_ASYNC OFF 
+GO
+
+ALTER DATABASE [AnalisisRiesgos] SET DATE_CORRELATION_OPTIMIZATION OFF 
+GO
+
+ALTER DATABASE [AnalisisRiesgos] SET TRUSTWORTHY OFF 
+GO
+
+ALTER DATABASE [AnalisisRiesgos] SET ALLOW_SNAPSHOT_ISOLATION OFF 
+GO
+
+ALTER DATABASE [AnalisisRiesgos] SET PARAMETERIZATION SIMPLE 
+GO
+
+ALTER DATABASE [AnalisisRiesgos] SET READ_COMMITTED_SNAPSHOT OFF 
+GO
+
+ALTER DATABASE [AnalisisRiesgos] SET HONOR_BROKER_PRIORITY OFF 
+GO
+
+ALTER DATABASE [AnalisisRiesgos] SET RECOVERY SIMPLE 
+GO
+
+ALTER DATABASE [AnalisisRiesgos] SET  MULTI_USER 
+GO
+
+ALTER DATABASE [AnalisisRiesgos] SET PAGE_VERIFY CHECKSUM  
+GO
+
+ALTER DATABASE [AnalisisRiesgos] SET DB_CHAINING OFF 
+GO
+
+ALTER DATABASE [AnalisisRiesgos] SET FILESTREAM( NON_TRANSACTED_ACCESS = OFF ) 
+GO
+
+ALTER DATABASE [AnalisisRiesgos] SET TARGET_RECOVERY_TIME = 60 SECONDS 
+GO
+
+ALTER DATABASE [AnalisisRiesgos] SET DELAYED_DURABILITY = DISABLED 
+GO
+
+ALTER DATABASE [AnalisisRiesgos] SET QUERY_STORE = OFF
+GO
+
+USE [AnalisisRiesgos]
+GO
+
+ALTER DATABASE SCOPED CONFIGURATION SET LEGACY_CARDINALITY_ESTIMATION = OFF;
+GO
+
+ALTER DATABASE SCOPED CONFIGURATION FOR SECONDARY SET LEGACY_CARDINALITY_ESTIMATION = PRIMARY;
+GO
+
+ALTER DATABASE SCOPED CONFIGURATION SET MAXDOP = 0;
+GO
+
+ALTER DATABASE SCOPED CONFIGURATION FOR SECONDARY SET MAXDOP = PRIMARY;
+GO
+
+ALTER DATABASE SCOPED CONFIGURATION SET PARAMETER_SNIFFING = ON;
+GO
+
+ALTER DATABASE SCOPED CONFIGURATION FOR SECONDARY SET PARAMETER_SNIFFING = PRIMARY;
+GO
+
+ALTER DATABASE SCOPED CONFIGURATION SET QUERY_OPTIMIZER_HOTFIXES = OFF;
+GO
+
+ALTER DATABASE SCOPED CONFIGURATION FOR SECONDARY SET QUERY_OPTIMIZER_HOTFIXES = PRIMARY;
+GO
+
+ALTER DATABASE [AnalisisRiesgos] SET  READ_WRITE 
+GO
+/*******************************************************************************
+********************************************************************************
+*******************************************************************************/
+USE [AnalisisRiesgos]
+GO
+/****** Object:  Table [dbo].[Empresa]    Script Date: 1/4/2018 12:11:08 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Empresa](
+	[IdEmpresa] [int] NOT NULL IDENTITY (1, 1),
+	[Nombre] [varchar](50) NOT NULL,
+	[IdUsuario] [int] NULL,
+ CONSTRAINT [PK_Empresa] PRIMARY KEY CLUSTERED 
+(
+	[IdEmpresa] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, 
+
+ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Objetivo]    Script Date: 1/4/2018 12:11:09 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Objetivo](
+	[IdObjetivo] [int] NOT NULL IDENTITY (1, 1),
+	[Nombre] [varchar](50) NOT NULL,
+	[Descripcion] [varchar](50) NULL,
+	[IdProyecto] [int] NOT NULL,
+ CONSTRAINT [PK_Objetivo] PRIMARY KEY CLUSTERED 
+(
+	[IdObjetivo] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, 
+
+ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[ObjetivosProyecto]    Script Date: 1/4/2018 12:11:09 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[ObjetivosProyecto](
+	[IdObjProyecto] [int] NOT NULL IDENTITY (1, 1),
+	[Fk_Objetivo] [int] NOT NULL,
+	[Fk_Proyecto] [int] NOT NULL,
+ CONSTRAINT [PK_ObjetivosProyecto] PRIMARY KEY CLUSTERED 
+(
+	[IdObjProyecto] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, 
+
+ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Proyecto]    Script Date: 1/4/2018 12:11:09 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Proyecto](
+	[IdProyecto] [int] NOT NULL IDENTITY (1, 1),
+	[Nombre] [varchar](50) NOT NULL,
+	[IdEmpresa] [int] NOT NULL,
+ CONSTRAINT [PK_Proyecto] PRIMARY KEY CLUSTERED 
+(
+	[IdProyecto] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, 
+
+ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[ProyectosEmpresa]    Script Date: 1/4/2018 12:11:09 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[ProyectosEmpresa](
+	[Id] [int] NOT NULL  IDENTITY (1, 1),
+	[Fk_Proyecto] [int] NOT NULL,
+	[Fk_Empresa] [int] NOT NULL,
+ CONSTRAINT [PK_ProyectosEmpresa] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, 
+
+ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Riesgo]    Script Date: 1/4/2018 12:11:09 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Riesgo](
+	[IdRiesgo] [int] NOT NULL IDENTITY (1, 1),
+	[Nombre] [varchar](50) NOT NULL,
+	[Descripcion] [varchar](250) NULL,
+	[Categoria] [int] NOT NULL,
+	[Probabilidad] [int] NOT NULL,
+	[Impacto] [int] NOT NULL,
+	[IdObjetivo] [int] NULL,
+ CONSTRAINT [PK_Riesgo] PRIMARY KEY CLUSTERED 
+(
+	[IdRiesgo] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, 
+
+ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[RiesgosObjetivo]    Script Date: 1/4/2018 12:11:09 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[RiesgosObjetivo](
+	[IdRiesgosObjetivo] [int] NOT NULL  IDENTITY (1, 1),
+	[Fk_Riesgo] [int] NOT NULL,
+	[Fk_Objetivo] [int] NOT NULL,
+ CONSTRAINT [PK_RiesgosObjetivo] PRIMARY KEY CLUSTERED 
+(
+	[IdRiesgosObjetivo] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, 
+
+ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Usuario]    Script Date: 1/4/2018 12:11:09 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Usuario](
+	[IdUsuario] [int] NOT NULL  IDENTITY (1, 1),
+	[Nombre] [varchar](50) NOT NULL,
+	[Apellidos] [varchar](50) NULL,
+	[Password] [varchar](50) NOT NULL,
+	[CorreoElec] [varchar](50) NULL,
+ CONSTRAINT [PK_Usuario] PRIMARY KEY CLUSTERED 
+(
+	[IdUsuario] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, 
+
+ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[UsuariosEmpresa]    Script Date: 1/4/2018 12:11:09 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[UsuariosEmpresa](
+	[IdUsuariosEmpresa] [int] NOT NULL IDENTITY (1, 1),
+	[Fk_Usuario] [int] NOT NULL,
+	[Fk_Empresa] [int] NOT NULL,
+ CONSTRAINT [PK_UsuariosEmpresa] PRIMARY KEY CLUSTERED 
+(
+	[IdUsuariosEmpresa] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, 
+
+ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/*****/
+ALTER TABLE [dbo].[ObjetivosProyecto]  WITH CHECK ADD  CONSTRAINT [FK_ObjProy_Objetivos] FOREIGN KEY
+
+([Fk_Objetivo])
+REFERENCES [dbo].[Objetivo] ([IdObjetivo])
+GO
+ALTER TABLE [dbo].[ObjetivosProyecto] CHECK CONSTRAINT [FK_ObjProy_Objetivos]
+GO
+ALTER TABLE [dbo].[ObjetivosProyecto]  WITH CHECK ADD  CONSTRAINT [FK_ObjProy_Proyecto] FOREIGN KEY
+
+([Fk_Proyecto])
+REFERENCES [dbo].[Proyecto] ([IdProyecto])
+GO
+ALTER TABLE [dbo].[ObjetivosProyecto] CHECK CONSTRAINT [FK_ObjProy_Proyecto]
+GO
+/*****/
+ALTER TABLE [dbo].[ProyectosEmpresa]  WITH CHECK ADD  CONSTRAINT [FK_ProyEmp__Proyectos] FOREIGN KEY
+
+([Fk_Proyecto])
+REFERENCES [dbo].[Proyecto] ([IdProyecto])
+GO
+ALTER TABLE [dbo].[ProyectosEmpresa] CHECK CONSTRAINT [FK_ProyEmp__Proyectos]
+GO
+ALTER TABLE [dbo].[ProyectosEmpresa]  WITH CHECK ADD  CONSTRAINT [FK_ProyEmp_Empresa] FOREIGN KEY
+
+([Fk_Empresa])
+REFERENCES [dbo].[Empresa] ([IdEmpresa])
+GO
+ALTER TABLE [dbo].[ProyectosEmpresa] CHECK CONSTRAINT [FK_ProyEmp_Empresa]
+GO
+/******/
+ALTER TABLE [dbo].[RiesgosObjetivo]  WITH CHECK ADD  CONSTRAINT [FK_ObjRies_Objetivo] FOREIGN KEY
+
+([Fk_Objetivo])
+REFERENCES [dbo].[Objetivo] ([IdObjetivo])
+GO
+ALTER TABLE [dbo].[RiesgosObjetivo] CHECK CONSTRAINT [FK_ObjRies_Objetivo]
+GO
+ALTER TABLE [dbo].[RiesgosObjetivo]  WITH CHECK ADD  CONSTRAINT [FK_RiesObj_Riesgos] FOREIGN KEY
+
+([Fk_Riesgo])
+REFERENCES [dbo].[Riesgo] ([IdRiesgo])
+GO
+ALTER TABLE [dbo].[RiesgosObjetivo] CHECK CONSTRAINT [FK_RiesObj_Riesgos]
+GO
+/******/
+ALTER TABLE [dbo].[UsuariosEmpresa]  WITH CHECK ADD  CONSTRAINT [FK_EmpUsua_Empresa] FOREIGN KEY
+
+([Fk_Empresa])
+REFERENCES [dbo].[Empresa] ([IdEmpresa])
+GO
+ALTER TABLE [dbo].[UsuariosEmpresa] CHECK CONSTRAINT [FK_EmpUsua_Empresa]
+GO
+ALTER TABLE [dbo].[UsuariosEmpresa]  WITH CHECK ADD  CONSTRAINT [FK_UsuaEmp_Usuarios] FOREIGN KEY
+
+([Fk_Usuario])
+REFERENCES [dbo].[Usuario] ([IdUsuario])
+GO
+ALTER TABLE [dbo].[UsuariosEmpresa] CHECK CONSTRAINT [FK_UsuaEmp_Usuarios]
+GO
+/*****/
+USE [master]
+GO
+ALTER DATABASE [AnalisisRiesgos] SET  READ_WRITE 
+GO
+
+INSERT INTO [AnalisisRiesgos].[dbo].[Usuario] (Nombre, Apellidos, Password, CorreoElec)
+VALUES ('Roberto', 'Barrett','12345','rbarrettr@ucenfotec.ac.cr');
+
+INSERT INTO [AnalisisRiesgos].[dbo].[Usuario] (Nombre, Apellidos, Password, CorreoElec)
+VALUES ('Mariana', 'Vargas','12345','mvargasm@ucenfotec.ac.cr');
+
+INSERT INTO [AnalisisRiesgos].[dbo].[Empresa] (Nombre, IdUsuario)
+VALUES ('QUAD CODE', 1);
+
+INSERT INTO [AnalisisRiesgos].[dbo].[Empresa] (Nombre, IdUsuario)
+VALUES ('Transcode', 2);
+
+INSERT INTO [AnalisisRiesgos].[dbo].[UsuariosEmpresa] (Fk_Usuario, Fk_Empresa)
+VALUES (1, 1);
+
+INSERT INTO [AnalisisRiesgos].[dbo].[Proyecto] (Nombre,IdEmpresa)
+VALUES ('Inicializacion',1);
+
+INSERT INTO [AnalisisRiesgos].[dbo].[Objetivo] (Nombre,Descripcion,IdProyecto)
+VALUES ('Calidad','Entregar un producto de calidad.',1);
+
+INSERT INTO [AnalisisRiesgos].[dbo].[Objetivo] (Nombre,Descripcion,IdProyecto)
+VALUES ('Cumplir plazos','Entregar un producto dentro del plazo.',1);
+
+INSERT INTO [AnalisisRiesgos].[dbo].[Objetivo] (Nombre,Descripcion,IdProyecto)
+VALUES ('Administrar recursos','Cumplir dentro del tiempo y presupuesto definido.',1);
+
+INSERT INTO [AnalisisRiesgos].[dbo].[Objetivo] (Nombre,Descripcion,IdProyecto)
+VALUES ('Continuidad','Renovar el negocio con el cliente.',1);
+
+INSERT INTO [AnalisisRiesgos].[dbo].[ObjetivosProyecto] (Fk_Objetivo, Fk_Proyecto)
+VALUES (1, 1);
+
+INSERT INTO [AnalisisRiesgos].[dbo].[ObjetivosProyecto] (Fk_Objetivo, Fk_Proyecto)
+VALUES (2, 1);
+
+INSERT INTO [AnalisisRiesgos].[dbo].[ObjetivosProyecto] (Fk_Objetivo, Fk_Proyecto)
+VALUES (3, 1);
+
+INSERT INTO [AnalisisRiesgos].[dbo].[ObjetivosProyecto] (Fk_Objetivo, Fk_Proyecto)
+VALUES (4, 1);
+
+INSERT INTO [AnalisisRiesgos].[dbo].[Riesgo] (Nombre,Descripcion,Categoria,Probabilidad,Impacto,IdObjetivo)
+VALUES ('Cancelación','Por falta de presupuesto',2,3,5,1);
+
+INSERT INTO [AnalisisRiesgos].[dbo].[Riesgo] (Nombre,Descripcion,Categoria,Probabilidad,Impacto,IdObjetivo)
+VALUES ('Presupuesto agotado','Incumplimiento de plazo',3,5,4,1);
+
+INSERT INTO [AnalisisRiesgos].[dbo].[Riesgo] (Nombre,Descripcion,Categoria,Probabilidad,Impacto,IdObjetivo)
+VALUES ('Incumplimiento de plazo','Problemas por dependencias',3,3,3,1);
+
+INSERT INTO [AnalisisRiesgos].[dbo].[Riesgo] (Nombre,Descripcion,Categoria,Probabilidad,Impacto,IdObjetivo)
+VALUES ('Cierre del proyecto','Por cierre de la empresa',1,2,5,1);
+
+INSERT INTO [AnalisisRiesgos].[dbo].[Riesgo] (Nombre,Descripcion,Categoria,Probabilidad,Impacto,IdObjetivo)
+VALUES ('Entregar un producto defectuoso','Por problemas tecnicos',2,5,5,1);
+
+INSERT INTO [AnalisisRiesgos].[dbo].[RiesgosObjetivo] (Fk_Riesgo, Fk_Objetivo)
+VALUES (1, 1);
+
+INSERT INTO [AnalisisRiesgos].[dbo].[RiesgosObjetivo] (Fk_Riesgo, Fk_Objetivo)
+VALUES (2, 1);
+
+INSERT INTO [AnalisisRiesgos].[dbo].[RiesgosObjetivo] (Fk_Riesgo, Fk_Objetivo)
+VALUES (3, 1);
+
+INSERT INTO [AnalisisRiesgos].[dbo].[RiesgosObjetivo] (Fk_Riesgo, Fk_Objetivo)
+VALUES (4, 1);
+
+INSERT INTO [AnalisisRiesgos].[dbo].[RiesgosObjetivo] (Fk_Riesgo, Fk_Objetivo)
+VALUES (5, 1);

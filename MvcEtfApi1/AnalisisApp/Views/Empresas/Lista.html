@@ -1,0 +1,40 @@
+﻿<div ng-controller="EmpresasCtrl">
+    {{message}}
+    <div class="col-xs-6">
+        <h3></h3>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Mostrar</th>
+                    <th>Borrar</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="empresa in empresas">
+                    <td>{{empresa.Nombre}}</td>
+                    <td>
+                        <a ng-click="DetalleEmp(empresa)" class="btn btn-default btn-sm">Detalle</a> 
+                         <!--<a ui-sref="Empresas.Detalle({paramEmp : {{empresa}}})" ui-sref-opts="{reload: true}" class="btn btn-default btn-sm">Detalle</a>--> 
+                    </td>
+                    <td>
+                        <a ng-click="Borrar(empresa.IdEmpresa)" class="btn btn-danger btn-sm">Borrar</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="col-xs-6">
+        <h3>Registrar empresas</h3>
+        <form>
+            <div class="form-group">
+                <label for="Title">Nombre: </label>
+                <input name="Title" type="text" class="form-control" ng-model="NombreEmp" placeholder="Nombre de empresa">
+            </div>
+            <button class="btn btn-primary" ng-click="registrarEmpresa()">Guardar</button>
+            <button class="btn btn-primary" ng-click="Cancelar()">Cancelar</button>
+        </form>
+    </div>
+    <span style="width:100px"><a ui-sref="Empresas.Lista">Regresar</a></span>
+</div>
+

@@ -1,0 +1,25 @@
+﻿<h3>Ingreso</h3>
+<div class="col-md-5">
+    <form ng-show="isEditable()">
+        <div class="form-group">
+            <label for="Nombre">Nombre</label>
+            <input name="Title" type="text" class="form-control" placeholder="" ng-model="usuario.Nombre">
+        </div>
+        <div class="form-group">
+            <label for="Apellidos">Apellidos</label>
+            <input name="Singers" type="text" class="form-control" placeholder="" ng-model="usuario.Apellidos">
+        </div>
+
+        <div class="form-group">
+            <label for="Correo">Correo electronico</label>
+            <input name="Correo" type="text" class="form-control" placeholder="" ng-model="usuario.CorreoElectronico">
+        </div>
+
+        <div class="form-group">
+            <label for="RunTime">Password</label>
+            <input name="RunTime" type="text" class="form-control" placeholder="" ng-model="usuario.Password">
+        </div>
+        <button class="btn btn-primary" ng-click="save()">Save</button>
+        <button class="btn btn-primary" ng-click="cancel()">Cancel</button>
+    </form>
+</div> 

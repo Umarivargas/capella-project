@@ -1,0 +1,50 @@
+﻿<h3>Detalle</h3>
+<div *ngIf="isDataLoaded" ng-controller="EmpresasCtrl" class="row">
+    <div class="col-xs-2">
+        <p>Nombre: {{detEmp.Nombre}}</p>
+        <p>ID: {{detEmp.IdEmpresa}}</p>
+    </div>
+
+    <div class="col-xs-4">
+        <h3>Proyectos</h3>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>ID</th>
+                    <th>Mostrar</th>
+                    <th>Borrar</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="proyecto in proyectosEmp" ng-init="$last && finished()">
+                    <td>{{proyecto.Nombre}}</td>
+                    <td>{{proyecto.IdProyecto}}</td>
+                    <td>
+                        <a ng-click="DetalleProy(proyecto)" class="btn btn-default btn-sm">Detalle</a>
+                        <!--<a ui-sref="Proyectos.Detalle({paramProy : {{proyecto}}})" ui-sref-opts="{reload: true}" class="btn btn-default btn-sm">Detalle</a>-->
+                    </td>
+                    <td>
+                        <a ng-click="BorrarProyEmp(proyecto.IdProyecto)" class="btn btn-danger btn-sm">Borrar</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="col-xs-4">
+        <form>
+            <div class="form-group">
+                <h3>Registrar proyecto</h3>
+                <label for="Title">Nombre: {{empresa.Nombre}}</label>
+                <input name="Title" type="text" class="form-control" ng-model="NombreProy" placeholder="Nombre de proyecto">
+            </div>
+
+            <button class="btn btn-primary" ng-click="RegProyEmp(empresa.IdEmpresa)">Guardar</button>
+            <button class="btn btn-primary" ng-click="Cancelar()">Cancelar</button>
+        </form>
+    </div>
+</div>
+<div class="row">
+    <a ui-sref="Empresas.Lista">Regresar</a>
+</div>

@@ -1,0 +1,25 @@
+﻿<div ng-controller="ProyectosCtrl">
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Id Empresa</th>
+                <th>Mostrar</th>
+                <th>Borrar</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="proyecto in proyectos">
+                <td>{{proyecto.Nombre}}</td>
+                <td>{{proyecto.IdEmpresa}}</td>
+                <td>
+                    <a ng-click="Detalle(proyecto)" class="btn btn-default btn-sm">Detalle</a>
+                </td>
+                <td>
+                    <a ng-click="Borrar(proyecto.IdProyecto)" class="btn btn-danger btn-sm">Borrar</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <span style="width:100px"><a ui-sref="Proyectos">Regresar</a></span>
+</div>

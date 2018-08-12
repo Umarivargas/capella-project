@@ -1,0 +1,35 @@
+﻿<div ng-controller="RiesgosCtrl">
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Descripcion</th>
+                <th>Categoria</th>
+                <th>Probabilidad</th>
+                <th>Impacto</th>
+                <th>Valor</th>
+                <th>Mostrar</th>
+                <th>Borrar</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="riesgo in riesXProy">
+                <td>{{riesgo.Nombre}}</td>
+                <td>{{riesgo.Descripcion}}</td>
+                <td>{{riesgo.Categoria}}</td>
+                <td>{{riesgo.Probabilidad}}</td>
+                <td>{{riesgo.Impacto}}</td>
+                <td>{{riesgo.Probabilidad * riesgo.Impacto}}</td>
+                <td>
+                    <a ng-click="DetalleRies(riesgo)" class="btn btn-default btn-sm">Detalle</a>
+                    <!--<a ui-sref="Riesgos.Detalle({paramRies: {{riesgo}}})" ui-sref-opts="{reload: true}" class="btn btn-default btn-sm">Detalle</a>-->
+                </td>
+                <td>
+                    <a ui-sref="Borrar/{{riesgo.IdRiesgo}}" class="btn btn-danger btn-sm">Borrar</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <span style="width:100px"><a ui-sref="Proyectos">Regresar</a></span>
+</div>
