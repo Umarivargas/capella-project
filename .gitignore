@@ -1,0 +1,11 @@
+
+.vs/config/applicationhost.config
+*.dll
+.vs/config/applicationhost.config
+.vs/MvcEtfApi1/v15/.suo
+.vs/MvcEtfApi1/v15/Server/sqlite3/storage.ide
+.vs/MvcEtfApi1/v15/Server/sqlite3/storage.ide-wal
+MvcEtfApi1/bin/MvcEtfApi1.dll.config
+MvcEtfApi1/bin/MvcEtfApi1.pdb
+MvcEtfApi1/obj/Debug/MvcEtfApi1.csproj.CopyComplete
+MvcEtfApi1/obj/Debug/MvcEtfApi1.csproj.CoreCompileInputs.cache

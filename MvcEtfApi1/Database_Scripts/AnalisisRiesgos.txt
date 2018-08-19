@@ -1,15 +1,4 @@
-﻿/*    ==Scripting Parameters==
-
-    Source Server Version : SQL Server 2016 (13.0.4001)
-    Source Database Engine Edition : Microsoft SQL Server Express Edition
-    Source Database Engine Type : Standalone SQL Server
-
-    Target Server Version : SQL Server 2016
-    Target Database Engine Edition : Microsoft SQL Server Express Edition
-    Target Database Engine Type : Standalone SQL Server
-*/
-
-USE [master]
+﻿USE [master]
 GO
 
 /****** Object:  Database [AnalisisRiesgos]    Script Date: 8/4/2018 11:16:03 PM ******/
@@ -179,7 +168,14 @@ GO
 CREATE TABLE [dbo].[Objetivo](
 	[IdObjetivo] [int] NOT NULL IDENTITY (1, 1),
 	[Nombre] [varchar](50) NOT NULL,
-	[Descripcion] [varchar](50) NULL,
+	[Descripcion] [varchar](100) NULL,
+	[fechaInicio] [datetime] NOT NULL,
+	[fechaFin] [datetime] NOT NULL,
+	[horasEstimadas] [int] NOT NULL,
+	[costoHoraRecurso] [float] NOT NULL,
+	[horasInvertidas] [float] NOT NULL,
+	[nombreDelRecurso] [varchar](100) NOT NULL,
+	[estado] [bit] NOT NULL,
 	[IdProyecto] [int] NOT NULL,
  CONSTRAINT [PK_Objetivo] PRIMARY KEY CLUSTERED 
 (
@@ -214,6 +210,9 @@ GO
 CREATE TABLE [dbo].[Proyecto](
 	[IdProyecto] [int] NOT NULL IDENTITY (1, 1),
 	[Nombre] [varchar](50) NOT NULL,
+	[fechaInicio] [datetime] NOT NULL,
+	[fechaFin] [datetime] NOT NULL,
+	[presupuestoTotal] [float] NOT NULL,
 	[IdEmpresa] [int] NOT NULL,
  CONSTRAINT [PK_Proyecto] PRIMARY KEY CLUSTERED 
 (
@@ -395,20 +394,23 @@ VALUES ('Transcode', 2);
 INSERT INTO [AnalisisRiesgos].[dbo].[UsuariosEmpresa] (Fk_Usuario, Fk_Empresa)
 VALUES (1, 1);
 
-INSERT INTO [AnalisisRiesgos].[dbo].[Proyecto] (Nombre,IdEmpresa)
-VALUES ('Inicializacion',1);
+INSERT INTO [AnalisisRiesgos].[dbo].[Proyecto] (Nombre,fechaInicio,fechaFin,presupuestoTotal,IdEmpresa)
+VALUES ('App Central','01/02/2018 00:00:00','08/31/2018 00:00:00',600000,1);
 
-INSERT INTO [AnalisisRiesgos].[dbo].[Objetivo] (Nombre,Descripcion,IdProyecto)
-VALUES ('Calidad','Entregar un producto de calidad.',1);
+INSERT INTO [AnalisisRiesgos].[dbo].[Objetivo] (Nombre,Descripcion,fechaInicio,fechaFin,horasEstimadas,costoHoraRecurso,horasInvertidas,nombreDelRecurso,estado,IdProyecto)
+VALUES ('Instalar ambientes','Infraestructura y aspectos tecnologicos.','01/02/2018 00:00:00','02/28/2018 00:00:00',180,62.5,160,'Carlos Alvarado',1,1);
 
-INSERT INTO [AnalisisRiesgos].[dbo].[Objetivo] (Nombre,Descripcion,IdProyecto)
-VALUES ('Cumplir plazos','Entregar un producto dentro del plazo.',1);
+INSERT INTO [AnalisisRiesgos].[dbo].[Objetivo] (Nombre,Descripcion,fechaInicio,fechaFin,horasEstimadas,costoHoraRecurso,horasInvertidas,nombreDelRecurso,estado,IdProyecto)
+VALUES ('Desarrollo','Realizar los hitos y tareas.','03/01/2018 00:00:00','04/30/2018 00:00:00',180,62.5,160,'Mariana Vargas',1,1);
 
-INSERT INTO [AnalisisRiesgos].[dbo].[Objetivo] (Nombre,Descripcion,IdProyecto)
-VALUES ('Administrar recursos','Cumplir dentro del tiempo y presupuesto definido.',1);
+INSERT INTO [AnalisisRiesgos].[dbo].[Objetivo] (Nombre,Descripcion,fechaInicio,fechaFin,horasEstimadas,costoHoraRecurso,horasInvertidas,nombreDelRecurso,estado,IdProyecto)
+VALUES ('Pruebas de QA y rendimiento','Efectuar pruebas de calidad, rendimiento y carga.','05/01/2018 00:00:00','06/30/2018 00:00:00',180,62.5,160,'Roberto Barrett',1,1);
 
-INSERT INTO [AnalisisRiesgos].[dbo].[Objetivo] (Nombre,Descripcion,IdProyecto)
-VALUES ('Continuidad','Renovar el negocio con el cliente.',1);
+INSERT INTO [AnalisisRiesgos].[dbo].[Objetivo] (Nombre,Descripcion,fechaInicio,fechaFin,horasEstimadas,costoHoraRecurso,horasInvertidas,nombreDelRecurso,estado,IdProyecto)
+VALUES ('Release','Entregar el proyecto.','07/01/2018 00:00:00','07/31/2018 00:00:00',200,62.5,180,'Luis G Solis',1,1);
+
+INSERT INTO [AnalisisRiesgos].[dbo].[Objetivo] (Nombre,Descripcion,fechaInicio,fechaFin,horasEstimadas,costoHoraRecurso,horasInvertidas,nombreDelRecurso,estado,IdProyecto)
+VALUES ('Estabilizacion','Estabilizar el proyecto.','08/01/2018 00:00:00','08/31/2018 00:00:00',200,62.5,200,'Lionel Messi',0,1);
 
 INSERT INTO [AnalisisRiesgos].[dbo].[ObjetivosProyecto] (Fk_Objetivo, Fk_Proyecto)
 VALUES (1, 1);

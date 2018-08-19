@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="f24818e2b43144c99668a6a62f0103c1" Name="Diagram1">
+        <EntityTypeShape EntityType="AnalisisRiesgosModel.Empresa" Width="1.5" PointX="0.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="AnalisisRiesgosModel.Objetivo" Width="1.5" PointX="5.75" PointY="3" IsExpanded="true" />
+        <EntityTypeShape EntityType="AnalisisRiesgosModel.ObjetivosProyecto" Width="1.5" PointX="8" PointY="7" IsExpanded="true" />
+        <EntityTypeShape EntityType="AnalisisRiesgosModel.Proyecto" Width="1.5" PointX="0.75" PointY="10.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="AnalisisRiesgosModel.ProyectosEmpresa" Width="1.5" PointX="3" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="AnalisisRiesgosModel.Riesgo" Width="1.5" PointX="5.75" PointY="8.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="AnalisisRiesgosModel.RiesgosObjetivo" Width="1.5" PointX="8" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="AnalisisRiesgosModel.Usuario" Width="1.5" PointX="0.75" PointY="6.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="AnalisisRiesgosModel.UsuariosEmpresa" Width="1.5" PointX="3" PointY="0.75" IsExpanded="true" />
+        <AssociationConnector Association="AnalisisRiesgosModel.FK_EmpUsua_Empresa" ManuallyRouted="false" />
+        <AssociationConnector Association="AnalisisRiesgosModel.FK_ProyEmp_Empresa" ManuallyRouted="false" />
+        <AssociationConnector Association="AnalisisRiesgosModel.FK_ObjProy_Objetivos" ManuallyRouted="false" />
+        <AssociationConnector Association="AnalisisRiesgosModel.FK_ObjRies_Objetivo" ManuallyRouted="false" />
+        <AssociationConnector Association="AnalisisRiesgosModel.FK_ObjProy_Proyecto" ManuallyRouted="false" />
+        <AssociationConnector Association="AnalisisRiesgosModel.FK_ProyEmp__Proyectos" ManuallyRouted="false" />
+        <AssociationConnector Association="AnalisisRiesgosModel.FK_RiesObj_Riesgos" ManuallyRouted="false" />
+        <AssociationConnector Association="AnalisisRiesgosModel.FK_UsuaEmp_Usuarios" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

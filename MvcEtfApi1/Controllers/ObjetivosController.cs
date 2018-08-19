@@ -6,6 +6,7 @@ using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
 using MvcEtfApi1.Models;
@@ -24,9 +25,9 @@ namespace MvcEtfApi1.Controllers
 
         // GET: api/Objetivos/5
         [ResponseType(typeof(Objetivo))]
-        public IHttpActionResult GetObjetivo(int id)
+        public async Task<IHttpActionResult> GetObjetivo(int id)
         {
-            Objetivo objetivo = db.Objetivoes.Find(id);
+            Objetivo objetivo = await db.Objetivoes.FindAsync(id);
             if (objetivo == null)
             {
                 return NotFound();
@@ -37,7 +38,7 @@ namespace MvcEtfApi1.Controllers
 
         // PUT: api/Objetivos/5
         [ResponseType(typeof(void))]
-        public IHttpActionResult PutObjetivo(int id, Objetivo objetivo)
+        public async Task<IHttpActionResult> PutObjetivo(int id, Objetivo objetivo)
         {
             if (!ModelState.IsValid)
             {
@@ -53,7 +54,7 @@ namespace MvcEtfApi1.Controllers
 
             try
             {
-                db.SaveChanges();
+                await db.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -72,7 +73,7 @@ namespace MvcEtfApi1.Controllers
 
         // POST: api/Objetivos
         [ResponseType(typeof(Objetivo))]
-        public IHttpActionResult PostObjetivo(Objetivo objetivo)
+        public async Task<IHttpActionResult> PostObjetivo(Objetivo objetivo)
         {
             if (!ModelState.IsValid)
             {
@@ -80,23 +81,23 @@ namespace MvcEtfApi1.Controllers
             }
 
             db.Objetivoes.Add(objetivo);
-            db.SaveChanges();
+            await db.SaveChangesAsync();
 
             return CreatedAtRoute("DefaultApi", new { id = objetivo.IdObjetivo }, objetivo);
         }
 
         // DELETE: api/Objetivos/5
         [ResponseType(typeof(Objetivo))]
-        public IHttpActionResult DeleteObjetivo(int id)
+        public async Task<IHttpActionResult> DeleteObjetivo(int id)
         {
-            Objetivo objetivo = db.Objetivoes.Find(id);
+            Objetivo objetivo = await db.Objetivoes.FindAsync(id);
             if (objetivo == null)
             {
                 return NotFound();
             }
 
             db.Objetivoes.Remove(objetivo);
-            db.SaveChanges();
+            await db.SaveChangesAsync();
 
             return Ok(objetivo);
         }

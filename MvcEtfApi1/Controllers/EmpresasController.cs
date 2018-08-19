@@ -6,6 +6,7 @@ using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
 using MvcEtfApi1.Models;
@@ -24,9 +25,9 @@ namespace MvcEtfApi1.Controllers
 
         // GET: api/Empresas/5
         [ResponseType(typeof(Empresa))]
-        public IHttpActionResult GetEmpresa(int id)
+        public async Task<IHttpActionResult> GetEmpresa(int id)
         {
-            Empresa empresa = db.Empresas.Find(id);
+            Empresa empresa = await db.Empresas.FindAsync(id);
             if (empresa == null)
             {
                 return NotFound();
@@ -37,7 +38,7 @@ namespace MvcEtfApi1.Controllers
 
         // PUT: api/Empresas/5
         [ResponseType(typeof(void))]
-        public IHttpActionResult PutEmpresa(int id, Empresa empresa)
+        public async Task<IHttpActionResult> PutEmpresa(int id, Empresa empresa)
         {
             if (!ModelState.IsValid)
             {
@@ -53,7 +54,7 @@ namespace MvcEtfApi1.Controllers
 
             try
             {
-                db.SaveChanges();
+                await db.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -72,7 +73,7 @@ namespace MvcEtfApi1.Controllers
 
         // POST: api/Empresas
         [ResponseType(typeof(Empresa))]
-        public IHttpActionResult PostEmpresa(Empresa empresa)
+        public async Task<IHttpActionResult> PostEmpresa(Empresa empresa)
         {
             if (!ModelState.IsValid)
             {
@@ -80,23 +81,23 @@ namespace MvcEtfApi1.Controllers
             }
 
             db.Empresas.Add(empresa);
-            db.SaveChanges();
+            await db.SaveChangesAsync();
 
             return CreatedAtRoute("DefaultApi", new { id = empresa.IdEmpresa }, empresa);
         }
 
         // DELETE: api/Empresas/5
         [ResponseType(typeof(Empresa))]
-        public IHttpActionResult DeleteEmpresa(int id)
+        public async Task<IHttpActionResult> DeleteEmpresa(int id)
         {
-            Empresa empresa = db.Empresas.Find(id);
+            Empresa empresa = await db.Empresas.FindAsync(id);
             if (empresa == null)
             {
                 return NotFound();
             }
 
             db.Empresas.Remove(empresa);
-            db.SaveChanges();
+            await db.SaveChangesAsync();
 
             return Ok(empresa);
         }
