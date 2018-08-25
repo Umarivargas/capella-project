@@ -10,18 +10,7 @@
                 url: 'api/objetivos'
             });
 
-            //if (pIdProy != null) {
-            //    for (var i = 0; i < objs.length; i++) {
-            //        if (objs[i][IdProyecto] === value) {
-            //            array[i];
-            //        }
-            //    }
-
-            //    return objs.results.find(result => result.IdObjetivo != null);
-            //} else {
-            //    alert(pIdProy + " nulo");
             return objs;
-            //}
         },
 
         getById: function (pId) {
@@ -33,13 +22,21 @@
             });
         },
 
-        registrar: function (pObj, pIdProy) {
+        registrar: function (pObj, pIdProy) {         
             $http({
                 method: "POST",
                 url: "/api/objetivos",
                 dataType: 'json',
                 data: {
-                    Nombre: pObj.Nombre,
+                    Nombre: pObj.Nombre,                  
+                    Descripcion: pObj.Descripcion,
+                    fechaInicio: pObj.fechaInicio,
+                    fechaFin: pObj.fechaFin,
+                    horasEstimadas: pObj.horasEstimadas,
+                    costoHoraRecurso: pObj.costoHoraRecurso,
+                    horasInvertidas: pObj.horasInvertidas,
+                    nombreDelRecurso: pObj.nombreDelRecurso,
+                    estado: 0,
                     IdProyecto: pIdProy
                 },
                 headers: { "Content-Type": "application/json" }

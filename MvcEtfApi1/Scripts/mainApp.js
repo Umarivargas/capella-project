@@ -59,31 +59,25 @@ app.controller("UsuariosCtrl", function (usrService, empService, $scope, $http, 
     }
 });
 
-app.controller("EmpresasCtrl", function (empService, objService, proyService, usrService, $scope, $filter, $http, $state, $stateParams) {
+app.controller("EmpresasCtrl", function (empService, objService, proyService, usrService, $scope, $filter, $http, $state, $stateParams, $q) {
     $scope.pagina = "Empresas";
     $scope.empresa = {};
     $scope.empresas = {};
     $scope.emp = { IdEmpresa: null, Nombre: null, IdUsuario: usrService.usrId, UsuarioEmpresa: {}, ProyectosEmpresa: {}, Usuario: { IdUsuario: 1 } };
     $scope.detEmp;
     $scope.proyectosEmp = {};
-    $scope.NombreProy = null;
-  
+    $scope.Proyecto = { IdProyecto: null, Nombre: null, fechaInicio: null, fechaFin: null, presupuestoTotal: null, IdEmpresa: null};
+
+    angular.element(window.document.body).ready(function () {   
+ 
+    });
+
     //Llamadas a proyectos por empresa
     $scope.$on('$stateChangeSuccess', function () {
-        if ($scope.detEmp == null) {          
-            $scope.detEmp = proyService.getEmpresa();
+        if ($stateParams.paramEmp != null) {
+            $scope.detEmp = $stateParams.paramEmp;
+            $scope.showProyList($stateParams.paramEmp.IdEmpresa);
         }
-        $scope.showProyList($scope.detEmp.IdEmpresa);
-        //proyService.getAll().then(function (response) {
-        //    for (var i = 0; i < response.data.length; i++) {
-        //        if (response.data[i].IdEmpresa == empService.getEmpresa().IdEmpresa) {
-        //            $scope.proyectosEmp[i] = response.data[i];
-        //            //console.log($scope.riesXProy[i].Nombre + " id: " + $scope.riesXProy[i].IdProyecto);
-        //        }
-        //    }
-        //}, function (error) {
-        //    console.log("Error occured ", error);
-        //});
     });
 
     empService.getAll().then(function (response) {
@@ -99,17 +93,11 @@ app.controller("EmpresasCtrl", function (empService, objService, proyService, us
                     $scope.proyectosEmp[i] = response.data[i];
                 }
             }
-            console.log(pIdEmpresa);
+            console.log("Recepcion de id de mepresa # "+pIdEmpresa+" En showProyList()");
         }, function (error) {
             console.log("Error occured ", error);
         });
     }
-
-    //empService.getById(pIdEmp).then(function (response) {
-    //    $scope.empresa = response.data;
-    //}, function (error) {
-    //    //console.log("Error occured ", error);
-    //});
 
     $scope.registrarEmpresa = function () {
         if ($scope.emp.Nombre.replace(/\s/g, '') != "" || $scope.emp.Nombre.replace(/\s/g, '') == null) {
@@ -131,29 +119,50 @@ app.controller("EmpresasCtrl", function (empService, objService, proyService, us
     }
 
     $scope.RegProyEmp = function (pIdEmp) {
-        if ($scope.NombreProy.replace(/\s/g, '') != "" || $scope.NombreProy.replace(/\s/g, '') == null) {
-            console.log("Registrando empresa: " + $scope.NombreProy + " ID: " + $scope.detEmp.IdEmpresa);
-            proyService.registrar($scope.NombreProy, $scope.detEmp.IdEmpresa);
-            $state.go('Empresas.Detalle', { paramEmp: $scope.detEmp });
+        if ($scope.detEmp.IdEmpresa != null && ($scope.Proyecto.Nombre.replace(/\s/g, '') != "" || $scope.Proyecto.Nombre.replace(/\s/g, '') == null)) {
+            console.log("Registrando proyecto: " + $scope.Proyecto.Nombre + " Empresa: " + $scope.detEmp.IdEmpresa);
+            console.log($scope.Proyecto.Nombre + " " + JSON.stringify($scope.Proyecto.fechaInicio) + " " + JSON.stringify($scope.Proyecto.fechaFin) + " " + $scope.Proyecto.presupuestoTotal + " ID empresa: " + $scope.detEmp.IdEmpresa);
+            //alert($filter('date')(new Date($scope.Proyecto.fechaInicio), 'dd-MM-yyyy'));
+            proyService.registrar(
+                $scope.Proyecto.Nombre,
+                $scope.Proyecto.fechaInicio,
+                $scope.Proyecto.fechaFin,
+                $scope.Proyecto.presupuestoTotal,
+                $scope.detEmp.IdEmpresa
+            );
+            $state.transitionTo('Empresas.Detalle', { paramEmp: $scope.detEmp }, { reload: true });
         }
     }
 
     $scope.BorrarProyEmp = function (pIdProy) {
-        proyService.borrar(pIdProy);
+        //proyService.borrar(pIdProy);
         $scope.detEmp = $stateParams.paramEmp;
-        $state.go('Empresas.Detalle', { paramEmp: $scope.detEmp });
+        $state.transitionTo('Empresas.Detalle', { paramEmp: $scope.detEmp }, { reload: true });
+        //alert($scope.detEmp.IdEmpresa);
     }
 
     $scope.DetalleEmp = function (pEmp) {
         $scope.detEmp = pEmp;
-        proyService.setEmpresa(pEmp);
-        //$scope.showProyList(empService.getEmpresa().IdEmpresa);
-        $state.go('Empresas.Detalle');
+        empService.setEmpresa(pEmp);
+        console.log("Obteniendo nombre de empresa " + empService.getEmpresa().Nombre +" desde DetalleEmp() ");
+        $state.transitionTo('Empresas.Detalle', { paramEmp: pEmp }, { reload: true });
+        //var promise = empService.asyncGreet(pEmp);
+        //promise.then(function () {
+        //    alert('Success: ');
+        //}, function (reason) {
+        //    alert('Failed: ');
+        //}, function (update) {
+        //    alert('Got notification: ');
+        //});
     }
 
     $scope.DetalleProy = function (pProy) {
         objService.setProyecto(pProy);
         $state.go('Proyectos.Detalle');
+    }
+
+    $scope.Regresar = function () {
+        $state.go('Empresas.Lista', { paramEmp: $scope.detEmp }, { reload: true });
     }
 });
 
@@ -173,6 +182,7 @@ app.controller("ProyectosCtrl", function (proyService, riesService, objService, 
     $scope.riesgos = [];
 
     /****************** Objetivos por proyectos ********************/
+    $scope.Objetivo = {};
     $scope.objsXProy = []
 
     //Llamadas a listar
@@ -218,7 +228,15 @@ app.controller("ProyectosCtrl", function (proyService, riesService, objService, 
     $scope.$on('$stateChangeSuccess', function () {
         $scope.detProy = objService.getProyecto();
         //console.log("Parametro proyecto: ", $scope.detProy);
-
+        if ($stateParams.paramEmp != null) {
+            $scope.proyecto = $stateParams.paramEmp;
+            //$scope.proyecto.IdProyecto = pdetProy.IdProyecto;
+            //$scope.proyecto.Nombre = pdetProy.Nombre;
+            //$scope.proyecto.fechaInicio = pdetProy.fechaInicio;
+            //$scope.proyecto.fechaFin = pdetProy.fechaFin;
+            //$scope.proyecto.presupuestoTotal = pdetProy.presupuestoTotal;
+            //$scope.proyecto.IdEmpresa = pdetProy.IdEmpresa;
+        }
         //Llamadas a objetivosos por proyecto
         objService.getAll().then(function (response) {
             for (var i = 0; i < response.data.length; i++) {
@@ -235,6 +253,50 @@ app.controller("ProyectosCtrl", function (proyService, riesService, objService, 
     $scope.DetalleObj = function (pProy) {
         objService.setProyecto(pProy);
         $state.go('Objetivos.Detalle');
+    }
+
+    $scope.RegObjProy = function () {
+        if ($scope.detProy.IdEmpresa != null && ($scope.Objetivo.Nombre.replace(/\s/g, '') != "" || $scope.Objetivo.Nombre.replace(/\s/g, '') == null)) {
+            console.log("Registrando objetivo: " + $scope.Objetivo.Nombre);
+ 
+            objService.registrar(
+                $scope.Objetivo,
+                $scope.detProy.IdProyecto
+            );
+
+            $state.transitionTo('Proyectos.Detalle', { paramEmp: $scope.detEmp }, { reload: true });
+        }
+    }
+
+    $scope.modView = function (pdetProy) {
+        proyService.setProyecto(pdetProy);
+
+        //$state.transitionTo('Proyectos.Modificar', { paramProy: pdetProy }, { reload: true });
+        setTimeout(function () {
+            if (pdetProy != null) {
+                $state.transitionTo('Proyectos.Modificar', { paramProy: pdetProy }, { reload: true });
+            }
+        }, 500);
+    }
+
+    $scope.modificarProy = function () {
+        alert('Modificabdo ' + $scope.IdProyecto);
+        //proyService.update(
+        //    $scope.Proyecto.Nombre,
+        //    $scope.Proyecto.fechaInicio,
+        //    $scope.Proyecto.fechaFin,
+        //    $scope.Proyecto.presupuestoTotal,
+        //    $scope.detEmp.IdEmpresa
+        //);
+    }
+
+    $scope.CancelarMod = function () {
+        $scope.proyecto = null;
+        $state.go('Proyectos.Detalle');
+    }
+
+    $scope.Regresar = function () {
+        $state.go('Empresas.Detalle', { paramEmp: $scope.detProy }, { reload: true });
     }
 });
 
@@ -388,9 +450,13 @@ app.config(function ($stateProvider, $urlRouterProvider) {
             url: "/Lista",
             templateUrl: "/AnalisisApp/Views/Proyectos/Lista.html"
         })
-        .state("Proyectos.Ingreso", {
-            url: "/Ingreso",
-            templateUrl: "/AnalisisApp/Views/Proyectos/Ingreso.html"
+        .state("Proyectos.Modificar", {
+            url: "/Modificar",
+            templateUrl: "/AnalisisApp/Views/Proyectos/Modificar.html",
+            controller: 'ProyectosCtrl',
+            params: {
+                paramProy: null,
+            }
         })
         .state("Proyectos.Detalle", {
             url: "Proyecto.Detalle",

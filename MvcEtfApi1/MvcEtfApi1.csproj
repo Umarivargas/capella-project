@@ -251,6 +251,7 @@
     <Content Include="AnalisisApp\Views\Proyectos\Detalle.html" />
     <Content Include="AnalisisApp\Views\Proyectos\Ingreso.html" />
     <Content Include="AnalisisApp\Views\Proyectos\Lista.html" />
+    <Content Include="AnalisisApp\Views\Proyectos\Modificar.html" />
     <Content Include="AnalisisApp\Views\Riesgos.html" />
     <Content Include="AnalisisApp\Views\Riesgos\Detalle.html" />
     <Content Include="AnalisisApp\Views\Riesgos\Lista.html" />

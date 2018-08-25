@@ -1,0 +1,31 @@
+﻿<div *ngIf="isDataLoaded" ng-controller="ProyectosCtrl" class="row">
+    <div class="col-xs-3">
+
+    </div>
+
+    <div class="col-xs-6">
+        <form>
+            <div class="form-group">
+                <h3>Modificar proyecto</h3>
+                <label for="Title">Nombre: </label>
+                <input name="Title" type="text" class="form-control" ng-model="Nombre">
+                <label for="Title">Fecha inicio: </label>
+                <input name="Title" type="text" class="form-control" ng-model="fechaInicio">
+                <label for="Title">Fecha fin: </label>
+                <input name="Title" type="text" class="form-control" ng-model="fechaFin">
+                <label for="Title">Presupuesto total: </label>
+                <input name="Title" type="number" class="form-control" ng-model="presupuestoTotal">
+            </div>
+
+            <button class="btn btn-primary" ng-click="modificarProy()">Guardar</button>
+            <button class="btn btn-primary" ng-click="CancelarMod()">Cancelar</button>
+        </form>
+    </div>
+
+    <div class="col-xs-3">
+
+    </div>
+</div>
+<div class="row">
+    <a ng-click="Regresar()">Regresar</a>
+</div>
