@@ -1,4 +1,4 @@
-﻿// T4 code generation is enabled for model 'C:\Users\User1\documents\visual studio 2015\Projects\MvcEtfApi1\MvcEtfApi1\Models\AnalisisDbModel.edmx'. 
+﻿// T4 code generation is enabled for model 'D:\capella-project\MvcEtfApi1\Models\AnalisisRiesgos.edmx'. 
 // To enable legacy code generation, change the value of the 'Code Generation Strategy' designer
 // property to 'Legacy ObjectContext'. This property is available in the Properties Window when the model
 // is open in the designer.

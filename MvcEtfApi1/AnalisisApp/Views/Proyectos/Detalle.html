@@ -1,15 +1,15 @@
 ﻿<h3>Detalle</h3>
-<div *ngIf="isDataLoaded" ng-controller="ProyectosCtrl" class="row">
+<div *ngIf="isDataLoaded" ng-controller="EmpresasCtrl" class="row">
     <!---->
     <div class="col-xs-3">        
-        <p>Nombre: {{detProy.Nombre}}<p />
-        <p>ID: {{detProy.IdProyecto}}</p>
+        <p>Nombre del proyecto: {{detProy.Nombre}}<p />
+        <p>Identificador: {{detProy.IdProyecto}}</p>
         <p />
         <hr />
     </div>
     <!---->
     <div class="col-xs-6">
-        <h3>Objetivos</h3>
+        <h3>Tareas</h3>
         <table class="table table-bordered">
             <thead>
                 <tr>
@@ -20,7 +20,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr ng-repeat="objetivo in objsXProy">
+                <tr ng-repeat="objetivo in objsXProy" ng-init="$last && finished()">
                     <td>{{objetivo.Nombre}}</td>
                     <td>{{objetivo.Descripcion}}</td>
                     <td>
@@ -36,19 +36,57 @@
     </div>
     <!---->
     <div class="col-xs-3">
-        <h3>Registrar objetivo</h3>
-        <form>
-            <div class="form-group">
-                <label for="Nombre">Nombre: </label>
-                <input name="Nombre" type="text" class="form-control" ng-model="NombreRies" placeholder="Nombre del riesgo">
-            </div>
-            <div class="form-group">
-                <label for="Descripcion">Descripcion</label>
-                <input name="Descripcion" type="text" class="form-control" placeholder="Descripcion del riesgo" ng-model="DescripcionRies">
-            </div>
+        <h3>Registrar Tarea</h3>
+        <div class="container">
+            <form>
+                <div class="form-group">
+                    <div class="form-group">
+                        <label for="Nombre">Nombre de la tarea: </label>
+                        <input name="Nombre" type="text" class="form-control" ng-model="nombreRegistroTarea">
+                    </div>
+                    <div class="form-group">
+                        <label for="Descripcion">Descripci&oacute;n</label>
+                        <input name="Descripcion" type="text" class="form-control" placeholder="Descripci&oacute;n de la tarea" ng-model="descripcionRegistroTarea">
+                    </div>
+                    <div class="form-group">
+                        <label for="fechaInicio">Fecha de Fin:</label>
+                        <input name="fechaInicio" class="form-control" placeholder="MM-DD-YYYY" ng-model="fechaInicioObjetivo">
+                    </div>
+                    <div class="form-group">
+                        <label for="fechaFin">Fecha de Fin:</label>
+                        <input name="fechaFin" class="form-control" placeholder="MM-DD-YYYY" ng-model="fechaFinObjetivo">
+                    </div>
+                    <div class="form-group">
+                        <label for="hrsEsperadas">Horas Estimadas: </label>
+                        <input name="hrsEsperadas" type="text" class="form-control" ng-model="hrasEstimadasObjetivo">
+                    </div>
+                    <div class="form-group">
+                        <label for="recursoAsignado">Nombre del recurso asignado: </label>
+                        <input name="recursoAsignado" type="text" class="form-control" ng-model="recursoAsignadoObjetivo">
+                    </div>
+                    <div class="form-group">
+                        <label for="costoRecurso">Costo por hora: </label>
+                        <input name="costoRecurso" type="text" class="form-control" ng-model="recursoAsignadoCostoObjetivo">
+                    </div>
+                    <div class="form-group">
+                        <label for="hrsInvertidas">Horas que se han invertido:</label>
+                        <input name="hrsInvertidas" type="text" class="form-control" ng-model="hrasInvertidasObjetivo">
+                    </div>
+                    <div class="form-group">
+                        <label for="porcentajeCompletitud">Porcentaje Completitud:</label>
+                        <select class="form-control" id="porcentajeCompletitud" ng-model="porcentajeCompletitud">
+                            <option value="Completada - 100%">Completada - 100%</option>
+                            <option value="En Progreso - 75%">En Progreso - 75%</option>
+                            <option value="En Progreso - 50%">En Progreso - 50%</option>
+                            <option value="En Progreso - 25%">En Progreso - 25%</option>
+                            <option value="Pendiente - 0%">Pendiente - 0%</option>
+                        </select>
+                    </div>
+                </div>
 
-            <button class="btn btn-primary" ng-click="RegRiesProy(proyecto.IdProyecto)">Guardar</button>
-            <button class="btn btn-primary" ng-click="Cancelar()">Cancelar</button>
-        </form>
+                <button id="btnRegTareaGuardar" class="btn btn-primary" ng-click="RegObjProy(proyecto.IdProyecto)">Guardar</button>
+                <button class="btn btn-primary" ng-click="Cancelar()">Cancelar</button>
+            </form>
+        </div>
     </div>
-</div>
+ </div>

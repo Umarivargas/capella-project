@@ -1,0 +1,60 @@
+﻿<div ng-controller="EmpresasCtrl">
+    <div class="container" padding-top: 100px;>
+        <h3 style="text-align: center; padding-bottom: 50px;">An&aacute;lisis del proyecto</h3>
+        <div class="row">
+            <div class="col-xs-3">
+                <p>Identificador: {{detProy.IdProyecto}}</p>
+                <p>Nombre del proyecto: {{detProy.Nombre}}<p />
+                <p>Fecha Inicio: {{detProy.fechaInicio}}</p>
+                <p>Fecha Fin: {{detProy.fechaFin}}</p>
+                <p>Presupuesto: {{detProy.presupuestoTotal}}</p>
+
+            </div>
+            <div class="col-md-8">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th colspan="2" text-align="center">An&aacute;lisis del proyecto: {{detProy.Nombre}} </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>BAC:</td>
+                            <td>{{detProy.presupuestoTotal}}</td>
+                        </tr>
+                        <tr>
+                            <td>% Trabajo Completado:</td>
+                            <td data-ng-init="porcentajeCompleEstimadoFecha=returnPorcentajeActualCompletado({{detProy.IdProyecto}})">{{porcentajeCompleEstimadoFecha}} %</td>
+                        </tr>
+                        <tr>
+                            <td>Valor Ganado(EV)</td>
+                            <td data-ng-init="sumaValorGanadoTarea=returnValorGanado({{detProy.IdProyecto}})">${{sumaValorGanadoTarea}}</td>
+                        </tr>
+                        <tr>
+                            <td>Valor Planeado(PV)</td>
+                            <td data-ng-init="sumaValorPlaneadoTarea=returnValorPlaneado({{detProy.IdProyecto}})">${{sumaValorPlaneadoTarea}}</td>
+                        </tr>
+                        <tr>
+                            <td>Costo Actual(AC)</td>
+                            <td data-ng-init="costoActual=returnCostoActual({{detProy.IdProyecto}})">${{costoActual}}</td>
+                        </tr>
+                        <tr>
+                            <td>Costo Variable(CV)</td>
+                            <td data-ng-init="costoVariable=(sumaValorGanadoTarea-sumaValorPlaneadoTarea)">{{sumaValorGanadoTarea-costoActual}}</td>
+                        </tr>
+                        <tr>
+                            <td>SPI</td>
+                            <td data-ng-init="spiResult=returnSPI({{detProy.IdProyecto}})">{{sumaValorGanadoTarea/sumaValorPlaneadoTarea}}</td>
+                        </tr>
+                        <tr>
+                            <td>CPI</td>
+                            <td data-ng-init="cpiResult=returnCPI({{detProy.IdProyecto}})">{{sumaValorGanadoTarea/costoActual}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+        <span style="width:100px"><a ui-sref="Proyectos">Regresar a los proyectos</a></span>
+</div>

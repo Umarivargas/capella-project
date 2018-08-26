@@ -25,6 +25,7 @@
     <UseGlobalApplicationHostFile />
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+    <Use64BitIISExpress />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -180,51 +181,52 @@
     <Compile Include="Controllers\RiesgosController.cs" />
     <Compile Include="Controllers\RiesgosObjetivosController.cs" />
     <Compile Include="Controllers\UsuariosController.cs" />
+    <Compile Include="Controllers\UsuariosEmpresasController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\AnalisisDbModel.Context.cs">
+    <Compile Include="Models\AnalisisRiesgos.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>AnalisisDbModel.Context.tt</DependentUpon>
+      <DependentUpon>AnalisisRiesgos.Context.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\AnalisisDbModel.cs">
+    <Compile Include="Models\AnalisisRiesgos.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>AnalisisDbModel.tt</DependentUpon>
+      <DependentUpon>AnalisisRiesgos.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\AnalisisDbModel.Designer.cs">
+    <Compile Include="Models\AnalisisRiesgos.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>AnalisisDbModel.edmx</DependentUpon>
+      <DependentUpon>AnalisisRiesgos.edmx</DependentUpon>
     </Compile>
     <Compile Include="Models\Empresa.cs">
-      <DependentUpon>AnalisisDbModel.tt</DependentUpon>
+      <DependentUpon>AnalisisRiesgos.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Objetivo.cs">
-      <DependentUpon>AnalisisDbModel.tt</DependentUpon>
+      <DependentUpon>AnalisisRiesgos.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\ObjetivosProyecto.cs">
-      <DependentUpon>AnalisisDbModel.tt</DependentUpon>
+      <DependentUpon>AnalisisRiesgos.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Proyecto.cs">
-      <DependentUpon>AnalisisDbModel.tt</DependentUpon>
+      <DependentUpon>AnalisisRiesgos.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\ProyectosEmpresa.cs">
-      <DependentUpon>AnalisisDbModel.tt</DependentUpon>
+      <DependentUpon>AnalisisRiesgos.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Riesgo.cs">
-      <DependentUpon>AnalisisDbModel.tt</DependentUpon>
+      <DependentUpon>AnalisisRiesgos.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\RiesgosObjetivo.cs">
-      <DependentUpon>AnalisisDbModel.tt</DependentUpon>
+      <DependentUpon>AnalisisRiesgos.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Usuario.cs">
-      <DependentUpon>AnalisisDbModel.tt</DependentUpon>
+      <DependentUpon>AnalisisRiesgos.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\UsuariosEmpresa.cs">
-      <DependentUpon>AnalisisDbModel.tt</DependentUpon>
+      <DependentUpon>AnalisisRiesgos.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -234,6 +236,7 @@
     <Content Include="AnalisisApp\Scripts\Services\Empresas_Service.js" />
     <Content Include="AnalisisApp\Scripts\ListaUsuarioController.js" />
     <Content Include="AnalisisApp\Scripts\Services\Objetivos_Service.js" />
+    <Content Include="AnalisisApp\Scripts\Services\AnalisisEV.js" />
     <Content Include="AnalisisApp\Scripts\Services\Proyectos_Service.js" />
     <Content Include="AnalisisApp\Scripts\Services\Riesgos_Service.js" />
     <Content Include="AnalisisApp\Scripts\Services\Usuarios_Service.js" />
@@ -251,6 +254,7 @@
     <Content Include="AnalisisApp\Views\Proyectos\Lista.html" />
     <Content Include="AnalisisApp\Views\Riesgos.html" />
     <Content Include="AnalisisApp\Views\Riesgos\Detalle.html" />
+    <Content Include="AnalisisApp\Views\AnalisisEV.html" />
     <Content Include="AnalisisApp\Views\Riesgos\Lista.html" />
     <Content Include="AnalisisApp\Views\Usuarios.html" />
     <Content Include="AnalisisApp\Views\Usuarios\Detalle.html" />
@@ -265,15 +269,15 @@
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
-    <Content Include="Models\AnalisisDbModel.Context.tt">
+    <Content Include="Models\AnalisisRiesgos.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>AnalisisDbModel.edmx</DependentUpon>
-      <LastGenOutput>AnalisisDbModel.Context.cs</LastGenOutput>
+      <DependentUpon>AnalisisRiesgos.edmx</DependentUpon>
+      <LastGenOutput>AnalisisRiesgos.Context.cs</LastGenOutput>
     </Content>
-    <Content Include="Models\AnalisisDbModel.tt">
+    <Content Include="Models\AnalisisRiesgos.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>AnalisisDbModel.edmx</DependentUpon>
-      <LastGenOutput>AnalisisDbModel.cs</LastGenOutput>
+      <DependentUpon>AnalisisRiesgos.edmx</DependentUpon>
+      <LastGenOutput>AnalisisRiesgos.cs</LastGenOutput>
     </Content>
     <Content Include="Scripts\angular-mocks.js" />
     <Content Include="Scripts\angular-ui-router.js" />
@@ -303,12 +307,12 @@
     <Content Include="Areas\HelpPage\Views\Help\Api.cshtml" />
     <Content Include="Scripts\angular.min.js.map" />
     <Content Include="fonts\fonts-awesome.min" />
-    <EntityDeploy Include="Models\AnalisisDbModel.edmx">
+    <EntityDeploy Include="Models\AnalisisRiesgos.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>AnalisisDbModel.Designer.cs</LastGenOutput>
+      <LastGenOutput>AnalisisRiesgos.Designer.cs</LastGenOutput>
     </EntityDeploy>
-    <Content Include="Models\AnalisisDbModel.edmx.diagram">
-      <DependentUpon>AnalisisDbModel.edmx</DependentUpon>
+    <Content Include="Models\AnalisisRiesgos.edmx.diagram">
+      <DependentUpon>AnalisisRiesgos.edmx</DependentUpon>
     </Content>
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />

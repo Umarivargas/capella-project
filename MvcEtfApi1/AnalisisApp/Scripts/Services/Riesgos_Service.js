@@ -11,7 +11,7 @@
                 url: 'api/Riesgos'
             });
         },
-
+       
         getById: function (pId) {
             //return proimise from here
             return $http({

@@ -22,6 +22,7 @@
     <Property Name="horasInvertidas" Type="float" Nullable="false" />
     <Property Name="nombreDelRecurso" Type="varchar" MaxLength="100" Nullable="false" />
     <Property Name="estado" Type="bit" Nullable="false" />
+    <Property Name="porcentajeCompletitud" Type="varchar" MaxLength="50" Nullable="false" />
     <Property Name="IdProyecto" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="ObjetivosProyecto">

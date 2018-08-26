@@ -23,6 +23,9 @@ namespace MvcEtfApi1.Models
     
         public int IdProyecto { get; set; }
         public string Nombre { get; set; }
+        public System.DateTime fechaInicio { get; set; }
+        public System.DateTime fechaFin { get; set; }
+        public double presupuestoTotal { get; set; }
         public int IdEmpresa { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

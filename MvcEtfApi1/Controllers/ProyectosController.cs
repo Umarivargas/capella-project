@@ -6,6 +6,7 @@ using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
 using MvcEtfApi1.Models;
@@ -24,9 +25,9 @@ namespace MvcEtfApi1.Controllers
 
         // GET: api/Proyectos/5
         [ResponseType(typeof(Proyecto))]
-        public IHttpActionResult GetProyecto(int id)
+        public async Task<IHttpActionResult> GetProyecto(int id)
         {
-            Proyecto proyecto = db.Proyectoes.Find(id);
+            Proyecto proyecto = await db.Proyectoes.FindAsync(id);
             if (proyecto == null)
             {
                 return NotFound();
@@ -37,7 +38,7 @@ namespace MvcEtfApi1.Controllers
 
         // PUT: api/Proyectos/5
         [ResponseType(typeof(void))]
-        public IHttpActionResult PutProyecto(int id, Proyecto proyecto)
+        public async Task<IHttpActionResult> PutProyecto(int id, Proyecto proyecto)
         {
             if (!ModelState.IsValid)
             {
@@ -53,7 +54,7 @@ namespace MvcEtfApi1.Controllers
 
             try
             {
-                db.SaveChanges();
+                await db.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -72,7 +73,7 @@ namespace MvcEtfApi1.Controllers
 
         // POST: api/Proyectos
         [ResponseType(typeof(Proyecto))]
-        public IHttpActionResult PostProyecto(Proyecto proyecto)
+        public async Task<IHttpActionResult> PostProyecto(Proyecto proyecto)
         {
             if (!ModelState.IsValid)
             {
@@ -80,23 +81,23 @@ namespace MvcEtfApi1.Controllers
             }
 
             db.Proyectoes.Add(proyecto);
-            db.SaveChanges();
+            await db.SaveChangesAsync();
 
             return CreatedAtRoute("DefaultApi", new { id = proyecto.IdProyecto }, proyecto);
         }
 
         // DELETE: api/Proyectos/5
         [ResponseType(typeof(Proyecto))]
-        public IHttpActionResult DeleteProyecto(int id)
+        public async Task<IHttpActionResult> DeleteProyecto(int id)
         {
-            Proyecto proyecto = db.Proyectoes.Find(id);
+            Proyecto proyecto = await db.Proyectoes.FindAsync(id);
             if (proyecto == null)
             {
                 return NotFound();
             }
 
             db.Proyectoes.Remove(proyecto);
-            db.SaveChanges();
+            await db.SaveChangesAsync();
 
             return Ok(proyecto);
         }

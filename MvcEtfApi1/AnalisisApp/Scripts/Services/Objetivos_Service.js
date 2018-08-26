@@ -3,6 +3,12 @@
         empId: null,
         paramObj: null,
 
+        getObjetivosProyecto: function (pidProyecto) {
+            return $http({
+                method: 'GET',
+                url: 'api/ObjetivosProyectos/' + pidProyecto
+            });
+        },
         getAll: function (pIdProy) {
             //return proimise from here
             var objs = $http({
@@ -33,20 +39,29 @@
             });
         },
 
-        registrar: function (pObj, pIdProy) {
+        registrar: function (pnombreRegistroTarea,pdescripcionRegistroTarea,pfechaInicio,pfechaFin,phrasEstimadasObjetivo,precursoAsignadoCostoObjetivo,phrasInvertidasObjetivo,precursoAsignadoObjetivo, pestadoObjetivo,pIdProy) {
             $http({
                 method: "POST",
                 url: "/api/objetivos",
                 dataType: 'json',
                 data: {
-                    Nombre: pObj.Nombre,
+                    Nombre: pnombreRegistroTarea,
+                    Descripcion: pdescripcionRegistroTarea,
+                    fechaInicio: pfechaInicio,
+                    fechaFin: pfechaFin,
+                    horasEstimadas: phrasEstimadasObjetivo,
+                    costoHoraRecurso: precursoAsignadoCostoObjetivo,
+                    horasInvertidas: phrasInvertidasObjetivo,
+                    nombreDelRecurso: precursoAsignadoObjetivo,
+                    estado: pestadoObjetivo,
                     IdProyecto: pIdProy
                 },
                 headers: { "Content-Type": "application/json" }
             }).then(function (response) {
+                alert("La tarea " + pnombreRegistroTarea + " ha sido registrado existosamente ");
                 return true;
             }, function myError(response) {
-                alert("Error al registrar " + pObj.Nombre);
+                alert("Error al registrar la tarea" + pnombreRegistroTarea);
                 return false;
             });
         },

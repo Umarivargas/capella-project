@@ -6,6 +6,7 @@ using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
 using MvcEtfApi1.Models;
@@ -24,9 +25,9 @@ namespace MvcEtfApi1.Controllers
 
         // GET: api/RiesgosObjetivos/5
         [ResponseType(typeof(RiesgosObjetivo))]
-        public IHttpActionResult GetRiesgosObjetivo(int id)
+        public async Task<IHttpActionResult> GetRiesgosObjetivo(int id)
         {
-            RiesgosObjetivo riesgosObjetivo = db.RiesgosObjetivoes.Find(id);
+            RiesgosObjetivo riesgosObjetivo = await db.RiesgosObjetivoes.FindAsync(id);
             if (riesgosObjetivo == null)
             {
                 return NotFound();
@@ -37,7 +38,7 @@ namespace MvcEtfApi1.Controllers
 
         // PUT: api/RiesgosObjetivos/5
         [ResponseType(typeof(void))]
-        public IHttpActionResult PutRiesgosObjetivo(int id, RiesgosObjetivo riesgosObjetivo)
+        public async Task<IHttpActionResult> PutRiesgosObjetivo(int id, RiesgosObjetivo riesgosObjetivo)
         {
             if (!ModelState.IsValid)
             {
@@ -53,7 +54,7 @@ namespace MvcEtfApi1.Controllers
 
             try
             {
-                db.SaveChanges();
+                await db.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -72,7 +73,7 @@ namespace MvcEtfApi1.Controllers
 
         // POST: api/RiesgosObjetivos
         [ResponseType(typeof(RiesgosObjetivo))]
-        public IHttpActionResult PostRiesgosObjetivo(RiesgosObjetivo riesgosObjetivo)
+        public async Task<IHttpActionResult> PostRiesgosObjetivo(RiesgosObjetivo riesgosObjetivo)
         {
             if (!ModelState.IsValid)
             {
@@ -80,23 +81,23 @@ namespace MvcEtfApi1.Controllers
             }
 
             db.RiesgosObjetivoes.Add(riesgosObjetivo);
-            db.SaveChanges();
+            await db.SaveChangesAsync();
 
             return CreatedAtRoute("DefaultApi", new { id = riesgosObjetivo.IdRiesgosObjetivo }, riesgosObjetivo);
         }
 
         // DELETE: api/RiesgosObjetivos/5
         [ResponseType(typeof(RiesgosObjetivo))]
-        public IHttpActionResult DeleteRiesgosObjetivo(int id)
+        public async Task<IHttpActionResult> DeleteRiesgosObjetivo(int id)
         {
-            RiesgosObjetivo riesgosObjetivo = db.RiesgosObjetivoes.Find(id);
+            RiesgosObjetivo riesgosObjetivo = await db.RiesgosObjetivoes.FindAsync(id);
             if (riesgosObjetivo == null)
             {
                 return NotFound();
             }
 
             db.RiesgosObjetivoes.Remove(riesgosObjetivo);
-            db.SaveChanges();
+            await db.SaveChangesAsync();
 
             return Ok(riesgosObjetivo);
         }

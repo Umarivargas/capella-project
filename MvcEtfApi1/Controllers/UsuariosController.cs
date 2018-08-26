@@ -6,6 +6,7 @@ using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
 using MvcEtfApi1.Models;
@@ -24,9 +25,9 @@ namespace MvcEtfApi1.Controllers
 
         // GET: api/Usuarios/5
         [ResponseType(typeof(Usuario))]
-        public IHttpActionResult GetUsuario(int id)
+        public async Task<IHttpActionResult> GetUsuario(int id)
         {
-            Usuario usuario = db.Usuarios.Find(id);
+            Usuario usuario = await db.Usuarios.FindAsync(id);
             if (usuario == null)
             {
                 return NotFound();
@@ -37,7 +38,7 @@ namespace MvcEtfApi1.Controllers
 
         // PUT: api/Usuarios/5
         [ResponseType(typeof(void))]
-        public IHttpActionResult PutUsuario(int id, Usuario usuario)
+        public async Task<IHttpActionResult> PutUsuario(int id, Usuario usuario)
         {
             if (!ModelState.IsValid)
             {
@@ -53,7 +54,7 @@ namespace MvcEtfApi1.Controllers
 
             try
             {
-                db.SaveChanges();
+                await db.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -72,7 +73,7 @@ namespace MvcEtfApi1.Controllers
 
         // POST: api/Usuarios
         [ResponseType(typeof(Usuario))]
-        public IHttpActionResult PostUsuario(Usuario usuario)
+        public async Task<IHttpActionResult> PostUsuario(Usuario usuario)
         {
             if (!ModelState.IsValid)
             {
@@ -80,23 +81,23 @@ namespace MvcEtfApi1.Controllers
             }
 
             db.Usuarios.Add(usuario);
-            db.SaveChanges();
+            await db.SaveChangesAsync();
 
             return CreatedAtRoute("DefaultApi", new { id = usuario.IdUsuario }, usuario);
         }
 
         // DELETE: api/Usuarios/5
         [ResponseType(typeof(Usuario))]
-        public IHttpActionResult DeleteUsuario(int id)
+        public async Task<IHttpActionResult> DeleteUsuario(int id)
         {
-            Usuario usuario = db.Usuarios.Find(id);
+            Usuario usuario = await db.Usuarios.FindAsync(id);
             if (usuario == null)
             {
                 return NotFound();
             }
 
             db.Usuarios.Remove(usuario);
-            db.SaveChanges();
+            await db.SaveChangesAsync();
 
             return Ok(usuario);
         }

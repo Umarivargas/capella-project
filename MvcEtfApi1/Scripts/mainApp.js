@@ -66,11 +66,12 @@ app.controller("EmpresasCtrl", function (empService, objService, proyService, us
     $scope.emp = { IdEmpresa: null, Nombre: null, IdUsuario: usrService.usrId, UsuarioEmpresa: {}, ProyectosEmpresa: {}, Usuario: { IdUsuario: 1 } };
     $scope.detEmp;
     $scope.proyectosEmp = {};
-    $scope.NombreProy = null;
-  
+    $scope.nombreProyecto = null;
+    $scope.diasTranscurridos = 0;
+
     //Llamadas a proyectos por empresa
     $scope.$on('$stateChangeSuccess', function () {
-        if ($scope.detEmp == null) {          
+        if ($scope.detEmp == null) {
             $scope.detEmp = proyService.getEmpresa();
         }
         $scope.showProyList($scope.detEmp.IdEmpresa);
@@ -86,10 +87,15 @@ app.controller("EmpresasCtrl", function (empService, objService, proyService, us
         //});
     });
 
+    $scope.irAnalisis = function (pProy) {
+        objService.setProyecto(pProy);
+        $state.go('AnalisisEV');
+    }
+
     empService.getAll().then(function (response) {
-        $scope.empresas = response.data;
-    }, function (error) {
-        console.log("Error occured ", error);
+            $scope.empresas = response.data;
+        }, function (error) {
+            console.log("Error occured ", error);
     });
 
     $scope.showProyList = function (pIdEmpresa) {
@@ -104,12 +110,380 @@ app.controller("EmpresasCtrl", function (empService, objService, proyService, us
             console.log("Error occured ", error);
         });
     }
+    /**Funciones del earned value***/
+
+    /** Valor ganado**/
+
+    $scope.returnValorGanado = function (pidProyecto) {
+        proyService.getAll().then(function (response) {
+            var respuesta;
+            for (var count = 0; count < response.data.length; count++) {
+                if (response.data[count].IdProyecto == pidProyecto) {
+                     respuesta = response.data[count].ObjetivosProyectoes;
+                }
+            }
+           
+            var BAC = 0;
+            var objTarea;
+            var valorGanadoTarea = 0;
+            var porcentajeCompletadoTarea = 0;
+            var actualCompletadoTarea = "";
+            var sumaValorGanadoTarea = 0;
+            var sumaHrsEstimadasTarea = 0;
+            var sumaCostoXHoraTarea = 0;
+            for (var i = 0; i < respuesta.length; i++) {
+                objTarea = respuesta[i];
+                sumaHrsEstimadasTarea = objTarea.Objetivo.horasEstimadas;
+                sumaCostoXHoraTarea =objTarea.Objetivo.costoHoraRecurso;
+                BAC = (sumaHrsEstimadasTarea * sumaCostoXHoraTarea);
+                porcentajeCompletadoTarea = objTarea.Objetivo.porcentajeCompletitud;
+
+                if (porcentajeCompletadoTarea == "Completada - 100%") {
+                    actualCompletadoTarea = 100;
+                } else {
+                    porcentajeCompletadoTarea = porcentajeCompletadoTarea.replace("%", "");
+                    porcentajeCompletadoTarea = porcentajeCompletadoTarea.replace("En Progreso - ", "");
+                    porcentajeCompletadoTarea = porcentajeCompletadoTarea.replace("Pendiente - ", "");
+                    actualCompletadoTarea = parseInt((porcentajeCompletadoTarea).replace(" ", ""));
+                }
+                valorGanadoTarea = ((BAC * actualCompletadoTarea) / 100);
+                sumaValorGanadoTarea = (sumaValorGanadoTarea + valorGanadoTarea);
+            }
+            $scope.sumaValorGanadoTarea = sumaValorGanadoTarea;
+            return sumaValorGanadoTarea;
+        }, function (error) {
+            console.log("Error en calculo del valor ganado ", error);
+            return false;
+        });
+    }
+
+
+    /** Valor planeado**/
+
+    $scope.returnValorPlaneado = function (pidProyecto) {
+
+        proyService.getAll().then(function (response) {
+            var respon;
+            for (var count = 0; count < response.data.length; count++) {
+                if (response.data[count].IdProyecto == pidProyecto) {
+                    respon = response.data[count].ObjetivosProyectoes;
+                }
+            }
+            var BAC = 0;
+            var objTarea;
+            var valorPlaneadoTarea = 0;
+            var porcentajeCompletadoTarea = 0;
+            var actualCompletadoTarea = "";
+            var sumaValorPlaneadoTarea = 0;
+            var sumaHrsEstimadasTarea = 0;
+            var sumaCostoXHoraTarea = 0;
+            var diasTranscurridos = 0;
+            var objData;
+            var porcentajeCompleEstimadoFecha = 0;
+
+            var fechaInicial = 0;
+            var dateFechaInicial = 0;
+            var dateFechaActual;
+            var dateFechaFin = 0;
+            var fechaFinal = 0;
+            var diasEntreFechaInicialFinal = 0;
+            var sumaPorcentajeEsperadoCompletado = 0;
+            // Calculo de fecha Actual *****************************************
+            var hoy = new Date();
+            var dd = hoy.getDate();
+            var mm = hoy.getMonth() + 1;
+            var yyyy = hoy.getFullYear();
+            var fechaActual = yyyy + "/" + mm + "/" + dd + " 00:00:00";
+            var fechaActual = fechaActual.split(" 00:00:00");
+
+            for (var i = 0; i < respon.length; i++) {
+                objTarea = respon[i];
+                //Fecha inicial
+                fechaInicial = objTarea.Objetivo.fechaInicio;
+                fechaInicial = fechaInicial.split(" 00:00:00");
+                dateFechaInicial = new Date(fechaInicial);
+                //Fecha Actual
+                dateFechaActual = new Date(fechaActual);
+
+                diasEntreFechaInicialFinal = $scope.calcularDifFechaInicialFinal(dateFechaFin, dateFechaInicial);
+                diasTranscurridos = diasTranscurridos + $scope.calcularDifFechaInicialFinal(dateFechaActual, dateFechaInicial);
+
+                sumaHrsEstimadasTarea = objTarea.Objetivo.horasEstimadas;
+                sumaCostoXHoraTarea = objTarea.Objetivo.costoHoraRecurso;
+                BAC = BAC + ((diasTranscurridos *8) * sumaCostoXHoraTarea);
+                diasTranscurridos = 0;
+            }
+            sumaValorPlaneadoTarea = Math.round((BAC * $scope.porcentajeCompleEstimadoFecha) / 100);
+            $scope.sumaValorPlaneadoTarea = sumaValorPlaneadoTarea;
+
+           return sumaValorPlaneadoTarea;
+        }, function (error) {
+            console.log("Error en calculo del valor planeado ", error);
+            return false;
+        });
+    }
+
+    /** Costo Actual**/
+
+    $scope.returnCostoActual = function (pidProyecto) {
+        proyService.getAll().then(function (response) {
+            var respon;
+            for (var count = 0; count < response.data.length; count++) {
+                if (response.data[count].IdProyecto == pidProyecto) {
+                    respon = response.data[count].ObjetivosProyectoes;
+                }
+            }
+            var BAC = 0;
+            var objTarea;
+            var costoActual = 0;
+            var porcentajeCompletadoTarea = 0;
+            var actualCompletadoTarea = "";
+            var sumaCostoActual = 0;
+            var sumaHrsInvertidas = 0;
+            var sumaCostoXHoraTarea = 0;
+            for (var i = 0; i < respon.length; i++) {
+                objTarea = respon[i];
+                sumaHrsInvertidas = objTarea.Objetivo.horasInvertidas;
+                sumaCostoXHoraTarea = objTarea.Objetivo.costoHoraRecurso;
+                
+                sumaCostoActual = sumaCostoActual+(sumaHrsInvertidas * sumaCostoXHoraTarea);
+            }
+            $scope.costoActual = sumaCostoActual;
+            return costoActual;
+        }, function (error) {
+            console.log("Error en calculo del costoActual ", error);
+            return false;
+        });
+    }
+
+    /** Cost variable**/
+
+    $scope.returnCV = function (pidProyecto) {
+
+        var returnValue = $scope.returnValorGanado(pidProyecto) - $scope.returnCostoActual(pidProyecto);
+        var costoVariable= "";
+        if (returnValue > 1) {
+            costoVariable = "Por Debajo del presupuesto: " + costoVariable;
+        } else if (returnValue == 1) {
+            costoVariable = "Dentro del presupuesto: " + costoVariable;
+        } else if (returnValue < 1) {
+            costoVariable = "Fuera del presupuesto: " + costoVariable;
+        }
+        $scope.costoVariable = costoVariable;
+        return costoVariable;
+    }
+    /** Schedule variance**/
+
+    $scope.returnSV = function (pidProyecto) {
+
+        var scheduleVariance = this.returnValorGanado(pidProyecto) - this.returnValorPlaneado(pidProyecto);
+        $scope.scheduleVariance = scheduleVariance;
+        return scheduleVariance;
+    }
+    /** SPI**/
+
+    $scope.returnSPI = function (pidProyecto) {
+
+        var spiResult = this.returnValorGanado(pidProyecto) / this.returnValorPlaneado(pidProyecto);
+        $scope.spiResult = spiResult;
+        return spiResult;
+    }
+    /** CPI**/
+
+    $scope.returnCPI = function (pidProyecto) {
+
+        var cpi = this.returnValorGanado(pidProyecto) / this.returnCostoActual(pidProyecto);
+        var cpiResult = "";
+        if (cpi < 1) {
+            cpiResult = "Fuera del presupuesto" + cpi;
+        } else if (cpi == 1) {
+            cpiResult = "Dentro del presupuesto: " + cpi;
+        } else if (cpi > 1) {
+            cpiResult = "Debajo del presupuesto: " + cpi;
+        }
+
+        $scope.cpiResult = cpiResult;
+        return cpiResult;
+    }
+
+    $scope.returnPorcentajeActualCompletado = function (pidProyecto) {
+        proyService.getAll().then(function (response) {
+            var respon;
+            for (var count = 0; count < response.data.length; count++) {
+                if (response.data[count].IdProyecto == pidProyecto) {
+                    respon = response.data[count].ObjetivosProyectoes;
+                }
+            }
+                // Calculo de fecha Actual *****************************************
+                var hoy = new Date();
+                var dd = hoy.getDate();
+                var mm = hoy.getMonth() + 1;
+                var yyyy = hoy.getFullYear();
+                var fechaActual = yyyy + "/" + mm + "/" +dd  + " 00:00:00";
+                var fechaActual = fechaActual.split(" 00:00:00");
+                //******************************************************************
+            
+                var objData;
+                var porcentajeCompleEstimadoFecha = 0;
+                var diasTranscurridos = 0;
+                var fechaInicial = 0;
+                var dateFechaInicial = 0;
+                var dateFechaActual;
+                var dateFechaFin = 0;
+                var fechaFinal = 0;
+                var diasEntreFechaInicialFinal = 0;
+                var sumaPorcentajeEsperadoCompletado = 0;
+                for (var i = 0; i < respon.length; i++) {
+                    objData = respon[i];
+                    //Fecha inicial
+                    fechaInicial = objData.Objetivo.fechaInicio;
+                    fechaInicial = fechaInicial.split(" 00:00:00");
+                    dateFechaInicial = new Date(fechaInicial);
+                    //fechaInicial = dateFechaInicial.getTime();*/
+
+                    //Fecha final
+                    fechaFinal = objData.Objetivo.fechaFin;
+                    fechaFinal = fechaFinal.split(" 00:00:00");
+                    dateFechaFin = new Date(fechaFinal);
+                    //fechaFinal = dateFechaFin.getTime();
+
+                    //Fecha Actual
+                    dateFechaActual = new Date(fechaActual);
+                    /*fechaActual = dateFechaActual.getTime();
+
+                    //Dias entre fecha inicial y final
+                    var semanas = 0;
+                    diasEntreFechaInicialFinal = Math.abs(fechaInicial - fechaFinal);
+                    diasEntreFechaInicialFinal = Math.round(diasEntreFechaInicialFinal / (1000 * 60 * 60 * 24));
+                    semanas = diasEntreFechaInicialFinal / 7;
+                    diasEntreFechaInicialFinal = Math.round(diasEntreFechaInicialFinal - ((diasEntreFechaInicialFinal / 7)));//Semanas
+                    //diasEntreFechaInicialFinal = ((diasEntreFechaInicialFinal-(semanas*2)) / 4);
+
+                    //Dias entre fecha inicial y actual
+                    diasTranscurridos = Math.abs(fechaInicial - fechaActual);
+                    diasTranscurridos = Math.round(diasTranscurridos / (1000 * 60 * 60 * 24));
+                    diasTranscurridos = Math.round(diasTranscurridos - ((diasTranscurridos / 7)));//Semanas
+                    semanas = diasTranscurridos / 7;
+                    diasTranscurridos = ((diasTranscurridos - (semanas * 2)) / 4);*/
+
+                    diasEntreFechaInicialFinal = $scope.calcularDifFechaInicialFinal(dateFechaFin, dateFechaInicial);
+                    diasTranscurridos = $scope.calcularDifFechaInicialFinal(dateFechaActual, dateFechaInicial);
+
+                    if (diasTranscurridos >= 0 && diasTranscurridos <= (diasEntreFechaInicialFinal * 0.25)) {
+                        sumaPorcentajeEsperadoCompletado = sumaPorcentajeEsperadoCompletado+ 25;
+                    } else if (diasTranscurridos > (diasEntreFechaInicialFinal * 0.25) && diasTranscurridos <= (diasEntreFechaInicialFinal * 0.50)) {
+                        sumaPorcentajeEsperadoCompletado = sumaPorcentajeEsperadoCompletado +50;
+                    } else if (diasTranscurridos > (diasEntreFechaInicialFinal * 0.50) && diasTranscurridos <= (diasEntreFechaInicialFinal * 0.75)) {
+                        sumaPorcentajeEsperadoCompletado = sumaPorcentajeEsperadoCompletado + 75;
+                    } else if (diasTranscurridos > (diasEntreFechaInicialFinal * 0.75) && diasTranscurridos <= ((diasEntreFechaInicialFinal * 100)/100)) {
+                        sumaPorcentajeEsperadoCompletado = sumaPorcentajeEsperadoCompletado + 100;
+                    }
+                  
+                }
+                
+               var porcentajeCompleEstimadoFecha = Math.round((sumaPorcentajeEsperadoCompletado / (respon.length * 100)) * 100);
+                $scope.porcentajeCompleEstimadoFecha = porcentajeCompleEstimadoFecha;
+                return porcentajeCompleEstimadoFecha;
+
+            }, function (error) {
+                console.log("Error calculando porcentaje actual completado ", error);
+                return false;
+            });
+    }
+
+    function calcDiasTranscurridos(pidProyecto) {
+        var diasTranscurridos = 0;
+        var respon;
+        proyService.getAll().then(function (response) {
+            for (var count = 0; count < response.data.length; count++) {
+                if (response.data[count].IdProyecto == pidProyecto) {
+                    respon = response.data[count].ObjetivosProyectoes;
+                }
+            }
+        
+            // Calculo de fecha Actual *****************************************
+            var hoy = new Date();
+            var dd = hoy.getDate();
+            var mm = hoy.getMonth() + 1;
+            var yyyy = hoy.getFullYear();
+            var fechaActual = yyyy + "/" + mm + "/" + dd + " 00:00:00";
+            var fechaActual = fechaActual.split(" 00:00:00");
+            //******************************************************************
+
+            var objData;
+            var porcentajeCompleEstimadoFecha = 0;
+            
+            var fechaInicial = 0;
+            var dateFechaInicial = 0;
+            var dateFechaActual;
+            var dateFechaFin = 0;
+            var fechaFinal = 0;
+            var diasEntreFechaInicialFinal = 0;
+            var sumaPorcentajeEsperadoCompletado = 0;
+            for (var i = 0; i < respon.length; i++) {
+                objData = respon[i];
+                //Fecha inicial
+                fechaInicial = objData.Objetivo.fechaInicio;
+                fechaInicial = fechaInicial.split(" 00:00:00");
+                dateFechaInicial = new Date(fechaInicial);
+                //fechaInicial = dateFechaInicial.getTime();*/
+                
+                //Fecha Actual
+                dateFechaActual = new Date(fechaActual);
+
+                diasEntreFechaInicialFinal = $scope.calcularDifFechaInicialFinal(dateFechaFin, dateFechaInicial);
+                diasTranscurridos = diasTranscurridos+$scope.calcularDifFechaInicialFinal(dateFechaActual, dateFechaInicial);
+            }
+            $scope.diasTranscurridos = diasTranscurridos;
+            return diasTranscurridos;
+        }, function (error) {
+            console.log("Error calculando porcentaje actual completado ", error);
+            return false;
+        });
+         return diasTranscurridos;
+    }
 
     //empService.getById(pIdEmp).then(function (response) {
     //    $scope.empresa = response.data;
     //}, function (error) {
     //    //console.log("Error occured ", error);
     //});
+    $scope.calcularDifFechaInicialFinal = function(dateFechaFin, dateFechaInicial){
+        if (dateFechaFin < dateFechaInicial) {
+            return 0;
+        }
+
+        // Calculate days between dates
+        var millisecondsPerDay = 86400 * 1000; // Day in milliseconds
+        dateFechaInicial.setHours(0, 0, 0, 1);  // Start just after midnight
+        dateFechaFin.setHours(23, 59, 59, 999);  // End just before midnight
+        var diff = dateFechaFin - dateFechaInicial;  // Milliseconds between datetime objects    
+        var days = Math.ceil(diff / millisecondsPerDay);
+
+        // Subtract two weekend days for every week in between
+        var weeks = Math.floor(days / 7);
+        days = days - (weeks * 2);
+
+        // Handle special cases
+        var startDay = dateFechaInicial.getDay();
+        var endDay = dateFechaFin.getDay();
+
+        // Remove weekend not previously removed.   
+        if (startDay - endDay > 1) {
+            days = days - 2;
+        }
+
+        // Remove start day if span starts on Sunday but ends before Saturday
+        if (startDay == 0 && endDay != 6) {
+            days = days - 1;
+        }
+
+        // Remove end day if span ends on Saturday but starts after Sunday
+        if (endDay == 6 && startDay != 0) {
+            days = days - 1;
+        }
+        return days;
+    }
 
     $scope.registrarEmpresa = function () {
         if ($scope.emp.Nombre.replace(/\s/g, '') != "" || $scope.emp.Nombre.replace(/\s/g, '') == null) {
@@ -129,15 +503,23 @@ app.controller("EmpresasCtrl", function (empService, objService, proyService, us
         $scope.emp.Nombre = null;
         $state.go('Empresas.Lista');
     }
-
-    $scope.RegProyEmp = function (pIdEmp) {
-        if ($scope.NombreProy.replace(/\s/g, '') != "" || $scope.NombreProy.replace(/\s/g, '') == null) {
-            console.log("Registrando empresa: " + $scope.NombreProy + " ID: " + $scope.detEmp.IdEmpresa);
-            proyService.registrar($scope.NombreProy, $scope.detEmp.IdEmpresa);
-            $state.go('Empresas.Detalle', { paramEmp: $scope.detEmp });
-        }
+    $scope.RegObjProy = function (pIdProy) {
+        var fechaInicio = ($scope.fechaInicioObjetivo) + " 00:00:00";
+        var fechaFin = ($scope.fechaFinObjetivo) + " 00:00:00";
+        var estado=1;
+        console.log("Registrando Tarea: " + $scope.nombreRegistroTarea);
+        objService.registrar($scope.nombreRegistroTarea, $scope.descripcionRegistroTarea, fechaInicio, fechaFin, $scope.hrasEstimadasObjetivo, $scope.recursoAsignadoCostoObjetivo, $scope.hrasInvertidasObjetivo, $scope.recursoAsignadoObjetivo, estado, $scope.detProy.IdProyecto);
+        $state.go('Proyectos.Detalle', { paramEmp: $scope.detEmp });
     }
-
+    $scope.RegProyEmp = function (pIdEmp) {
+            var fechaInicio = ($scope.fechaInicioProyecto)+" 00:00:00";
+            var fechaFin = ($scope.fechaFinProyecto) + " 00:00:00";
+            var presupuestoTotal = parseInt($scope.presupuestoTotal, 10)
+            proyService.registrar($scope.nombreProyecto, fechaInicio, fechaFin, presupuestoTotal, $scope.detEmp.IdEmpresa);
+        console.log("Registrando proyecto: " + $scope.nombreProyecto);
+            $state.go('Empresas.Detalle', { paramEmp: $scope.detEmp });
+  
+    }
     $scope.BorrarProyEmp = function (pIdProy) {
         proyService.borrar(pIdProy);
         $scope.detEmp = $stateParams.paramEmp;
@@ -150,7 +532,7 @@ app.controller("EmpresasCtrl", function (empService, objService, proyService, us
         //$scope.showProyList(empService.getEmpresa().IdEmpresa);
         $state.go('Empresas.Detalle');
     }
-
+   
     $scope.DetalleProy = function (pProy) {
         objService.setProyecto(pProy);
         $state.go('Proyectos.Detalle');
@@ -161,7 +543,7 @@ app.controller("ProyectosCtrl", function (proyService, riesService, objService, 
     $scope.pagina = "Proyectos";
     $scope.proyectos = [];
     $scope.proyecto = {};
-    $scope.Proy = { Nombre: $scope.NombreProy };
+    $scope.Proy = { Nombre: $scope.nombreProyecto };
     $scope.detProy;
     /******************Objeto Riesgo********************/
     $scope.NombreRies = null;
@@ -250,6 +632,20 @@ app.controller("ObjetivosCtrl", function (objService, riesService, $scope, $http
 
     $scope.Ries = { Nombre: null, Descripcion: null, Probabilidad: null, Impacto: null, IdProyecto: null }
 
+    $scope.RegObjProy = function (pIdProy) {
+        var fechaInicio = ($scope.fechaInicioObjetivo) + " 00:00:00";
+        var fechaFin = ($scope.fechaFinObjetivo) + " 00:00:00";
+        var estado;
+        if ($scope.estadoObjetivo == "Completado") {
+            estado = 0;
+        } else {
+            estado = 1;
+        }
+        console.log("Registrando Tarea: " + $scope.nombreRegistroTarea);
+        objService.registrar($scope.nombreRegistroTarea, $scope.descripcionRegistroTarea, fechaInicio, fechaFin, $scope.hrasEstimadasObjetivo, $scope.recursoAsignadoCostoObjetivo, $scope.hrasInvertidasObjetivo, $scope.recursoAsignadoObjetivo, estado, $scope.detProy.IdProyecto);
+        $state.go('Proyectos.Detalle', { paramEmp: $scope.detEmp });
+    }
+   
     objService.getAll().then(function (response) {
         //alert($stateParams.id);
         $scope.objetivos = response.data;
@@ -308,11 +704,10 @@ app.controller("RiesgosCtrl", function (riesService, $scope, $http, $state, $sta
     $scope.riesgos = [];
     $scope.riesgo;
     $scope.detRies;
-
+    
     $scope.$on('$stateChangeSuccess', function () {
         $scope.detRies = riesService.getRiesgo();
     })
-
     riesService.getAll().then(function (response) {
         $scope.riesgos = response.data;
     }, function (error) {
@@ -399,6 +794,11 @@ app.config(function ($stateProvider, $urlRouterProvider) {
             params: {
                 paramProy: null,
             }
+        })
+        .state("AnalisisEV", {
+            url: "/AnalisisEV",
+            templateUrl: "/AnalisisApp/Views/AnalisisEV.html",
+            controller: 'ProyectosCtrl',
         })
         .state("Riesgos", { //Seccion de Riesgos
             url: "/Riesgos",

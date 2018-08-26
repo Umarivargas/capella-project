@@ -1,4 +1,4 @@
-﻿app.factory('proyService', function ($http, $stateParams, riesService, objService) {
+﻿app.factory('analisisEVService', function ($http, $stateParams, proyService) {
     return {
         paramObj: null,
 
@@ -9,6 +9,7 @@
                 url: 'api/proyectos'
             });
         },
+
         getById: function (pIdProy) {
             //return proimise from here
             return $http({
@@ -64,12 +65,7 @@
         regisObjProy: function (pObj, pIdProy) {
             objService.registrar(pObj, $stateParams.id);
         },
-        getObjProyecto: function (pidProyecto) {
-            return $http({
-                method: 'GET',
-                url: 'api/Proyectos/2'
-            });
-        },
+
         getEmpresa: function () {
             if (paramObj != null) {
                return paramObj;

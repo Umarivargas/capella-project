@@ -201,7 +201,7 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <EntityContainer Name="AnalisisRiesgosEntities" annotation:LazyLoadingEnabled="true">
+  <EntityContainer Name="Entities" annotation:LazyLoadingEnabled="true">
     <EntitySet Name="Empresas" EntityType="Self.Empresa" />
     <EntitySet Name="Objetivoes" EntityType="Self.Objetivo" />
     <EntitySet Name="ObjetivosProyectoes" EntityType="Self.ObjetivosProyecto" />

@@ -1,18 +1,19 @@
 ﻿<h3>Detalle</h3>
-<div *ngIf="isDataLoaded" ng-controller="EmpresasCtrl" class="row">
+<div *ngIf="isDataLoaded" ng-controller="EmpresasCtrl" class="row">|
     <div class="col-xs-2">
-        <p>Nombre: {{detEmp.Nombre}}</p>
-        <p>ID: {{detEmp.IdEmpresa}}</p>
+        <p>Nombre de la empresa: {{detEmp.Nombre}}</p>
+        <p>Identificador: {{detEmp.IdEmpresa}}</p>
     </div>
 
-    <div class="col-xs-4">
+    <div class="col-md-6" padding-top: 20px;>
         <h3>Proyectos</h3>
         <table class="table table-bordered">
             <thead>
                 <tr>
-                    <th>Nombre</th>
-                    <th>ID</th>
-                    <th>Mostrar</th>
+                    <th>Nombre del proyecto:</th>
+                    <th>Identificador:</th>
+                    <th>Mostrar Tareas</th>
+                    <th>Realizar An&aacute;lisis</th>
                     <th>Borrar</th>
                 </tr>
             </thead>
@@ -25,6 +26,9 @@
                         <!--<a ui-sref="Proyectos.Detalle({paramProy : {{proyecto}}})" ui-sref-opts="{reload: true}" class="btn btn-default btn-sm">Detalle</a>-->
                     </td>
                     <td>
+                        <a ng-click="irAnalisis(proyecto)" class="btn btn-default btn-sm">Mostrar Estado</a>
+                    </td>
+                    <td>
                         <a ng-click="BorrarProyEmp(proyecto.IdProyecto)" class="btn btn-danger btn-sm">Borrar</a>
                     </td>
                 </tr>
@@ -32,16 +36,35 @@
         </table>
     </div>
 
-    <div class="col-xs-4">
+    <div class="col-md-4" padding-left: 100px;>
         <form>
             <div class="form-group">
                 <h3>Registrar proyecto</h3>
-                <label for="Title">Nombre: {{empresa.Nombre}}</label>
-                <input name="Title" type="text" class="form-control" ng-model="NombreProy" placeholder="Nombre de proyecto">
-            </div>
-
-            <button class="btn btn-primary" ng-click="RegProyEmp(empresa.IdEmpresa)">Guardar</button>
-            <button class="btn btn-primary" ng-click="Cancelar()">Cancelar</button>
+                <div class="container">
+                    <div class="col">
+                        <div class="form-group">
+                            <label for="Title">Nombre: {{empresa.Nombre}}</label>
+                            <input name="Title" type="text" class="form-control" ng-model="nombreProyecto" placeholder="Nombre de proyecto">
+                        </div>
+                        <div class="form-group" id="proyectosInfoFechaInicio">
+                            <label for="fechaInicio">Fecha de Inicio:</label>
+                            <input name="fechaInicio" class="form-control" placeholder="MM/DD/YYYY" ng-model="fechaInicioProyecto">
+                        </div>
+                        <div class="form-group" id="proyectosInfoFechaFin">
+                                <label for="fechaFin">Fecha de Fin:</label>
+                                <input name="fechaFin" class="form-control" placeholder="MM/DD/YYYY" ng-model="fechaFinProyecto">
+                           </div>
+                        <div class="form-group" id="proyectosInfoPresupuesto">
+                            <label for="presupuestoTotal">Presupuesto Total:</label>
+                            <input name="presupuestoTotal" type="datetime" class="form-control" ng-model="presupuestoTotal" placeholder="Presupuesto">
+                        </div>
+                        </div>
+                        <div class="container" id="containerGuardarCancelar">
+                            <button id="btnRegProyGuardar" class="btn btn-primary" ng-click="RegProyEmp(empresa.IdEmpresa)">Guardar</button>
+                            <button id="btnRegProyCancelar" class="btn btn-primary" ng-click="Cancelar()">Cancelar</button>
+                        </div>
+                    </div>
+        </div>
         </form>
     </div>
 </div>

@@ -24,6 +24,7 @@
     <Property Name="horasInvertidas" Type="Double" Nullable="false" />
     <Property Name="nombreDelRecurso" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
     <Property Name="estado" Type="Boolean" Nullable="false" />
+    <Property Name="porcentajeCompletitud" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
     <Property Name="IdProyecto" Type="Int32" Nullable="false" />
     <NavigationProperty Name="ObjetivosProyectoes" Relationship="Self.FK_ObjProy_Objetivos" FromRole="Objetivo" ToRole="ObjetivosProyecto" />
     <NavigationProperty Name="RiesgosObjetivoes" Relationship="Self.FK_ObjRies_Objetivo" FromRole="Objetivo" ToRole="RiesgosObjetivo" />
@@ -201,7 +202,7 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <EntityContainer Name="AnalisisRiesgosEntities" annotation:LazyLoadingEnabled="true">
+  <EntityContainer Name="AnalisisRiesgosConnect" annotation:LazyLoadingEnabled="true">
     <EntitySet Name="Empresas" EntityType="Self.Empresa" />
     <EntitySet Name="Objetivoes" EntityType="Self.Objetivo" />
     <EntitySet Name="ObjetivosProyectoes" EntityType="Self.ObjetivosProyecto" />
